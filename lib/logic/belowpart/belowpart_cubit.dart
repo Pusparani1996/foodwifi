@@ -1,63 +1,106 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:foodwifi/logic/belowpart/belowpart_state.dart';
 import 'package:foodwifi/model/categorymodel.dart';
+import 'package:foodwifi/model/joinmodel.dart';
+import 'package:foodwifi/serviceapi/serviceapi.dart';
 
 import 'package:http/http.dart' as http;
+
+import '../../model/bellowanothermodel.dart';
 
 class BellowDataCubit extends Cubit<BellowPartState> {
   BellowDataCubit()
       : super(const BellowPartState(
-          belowalldata: [],
+          // belowalldata: [], oneitem: [], belowdatalistveg: [],
+          status: Status.initial,
           // allproductlist: []
-        )) {
-    belowgetalldata();
-  }
+        ));
+  bool get isLoading => state.status == Status.loading;
 
-  Future<List<CategoryModel?>?> belowgetalldata({String? id}) async {
+  Future<void> bellowanotherModelFromJson(String id) async {
+    if (isLoading) {
+      return;
+    }
+    emit(const BellowPartState(
+      status: Status.loading,
+      // belowalldata: [],
+      // oneitem: [],
+      // belowdatalistveg: []
+    ));
+
     try {
       final queryParameters = {
         'id': id,
       };
       final baseHeader = {'Branchid': "1"};
       final response = await http.get(
-          Uri.http('app.myfoodwifi.com', '/api/restaurants/categoryproduct',
-              queryParameters),
-          headers: baseHeader);
+        Uri.http('app.myfoodwifi.com', '/api/restaurants/categoryproduct',
+            queryParameters),
+        headers: baseHeader,
+      );
 
-      log(response.toString());
+      // log(response.toString());
 
       if (response.statusCode == 200) {
-        log(response.statusCode.toString());
-        log(response.body);
-        var data2 = productmodelFromJson(response.body);
-        // // e contain all data
-        // var user2 = data.map((e) {
-        //   // map of first item list
-        //   List l1 = e['items'][0];
-        //   //e2 contain all data of first item
-        //   var datamap = l1.map((e2) {
-        //     return Product.fromJson(e2);
-        //   }).toList();
-        //   return datamap;
-        // }).toList();
+        // var data2 = bellowanotherModelFromJson(response.body);
+        var data = json.decode(response.body) as List;
 
-        // log(user2.toString());
+        //join review and bellow part data(catagoryproducts)
+        var review = await ServiceApi().getcustomreview(id);
+        data[0]["review_data"] = review;
+        // log("i am comming from join$data");
+        // log("JOIN DATA : $data");
+
+        var finaljoinbellow =
+            data.map((e) => JoinReviewBellowModel.fromJson(e)).toList();
+        log("I am comming from final join data $finaljoinbellow");
+
+        List<JoinReviewBellowModel>? vegalllist = [];
+
+        for (var element in finaljoinbellow) {
+          if (element.reviewData != null) {
+            vegalllist.add(element);
+          } else {
+            for (var items in element.products) {
+              if (items.type == "veg") {
+                if (vegalllist.contains(element)) {
+                  log("item added to list");
+                } else {
+                  vegalllist.add(element);
+                }
+              }
+            }
+          }
+        }
 
         log('Successfully get below Data');
+
+        // log(finaljoinbellow.toString());
+
         emit(BellowPartState(
-          belowalldata: data2,
-          //allproductlist: []
-        ));
-        return data2!;
+            status: Status.loaded,
+            belowalldata: finaljoinbellow,
+            oneitem: [],
+            belowdatalistveg: vegalllist,
+            bellowallwithoutremove: []));
+        // return data2;
       } else {
-        log('Failed to below Getdata.');
+        emit(const BellowPartState(
+          belowalldata: [],
+          // oneitem: [],
+          // belowdatalistveg: [],
+          status: Status.error,
+        ));
       }
       //return null;
     } catch (e) {
-      log(e.toString());
+      log("Erroer come from brllow Cubit" + e.toString());
+      emit(const BellowPartState(
+        status: Status.error,
+      ));
     }
-    return null;
   }
 }

@@ -52,6 +52,9 @@ dependencies:
   cached_network_image: ^3.2.3
   animated_text_kit: ^4.2.2
   loading_animation_widget: ^1.2.0+4
+  intl: ^0.18.0
+  bottom_sheet: ^3.1.2
+  scrollable_positioned_list: ^0.3.5
 
 dev_dependencies:
   flutter_test:

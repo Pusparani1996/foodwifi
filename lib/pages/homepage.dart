@@ -7,7 +7,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodwifi/logic/cubit/fetchdata_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodwifi/logic/searchrestuarentfilter/searchfilter_cubit.dart';
 import 'package:foodwifi/model/foodwifimodel.dart';
+import 'package:foodwifi/pages/search_page.dart';
+import 'package:foodwifi/pages/searchrestuarentfilter_page.dart';
 import 'package:foodwifi/router/router.gr.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 
@@ -38,9 +41,20 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  List animatedtextcopy = [
+    "Momo",
+    " Chiken Chou",
+    "Pizza",
+    " Biriyani",
+    "Burger",
+    "Paratha "
+  ];
+  String anitext = '';
+
   @override
   Widget build(BuildContext context) {
     final alldata = context.watch<FetchdataCubit>().state;
+    // alldata.
     List<FoodwifiModel> alldatalist = alldata.alldata;
 
     firstitemlist = alldata.firstlistitems;
@@ -157,6 +171,8 @@ class _HomePageState extends State<HomePage>
                           const SizedBox(
                             height: 10,
                           ),
+
+                          // FOR SEZRCH TEXTFIELD
                           Container(
                             decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 241, 236, 236),
@@ -166,6 +182,17 @@ class _HomePageState extends State<HomePage>
                                 : MediaQuery.of(context).size.height / 10,
                             child: scrollvalue > 0
                                 ? TextFormField(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SearchPage(
+                                              textvalue: 'What are you craving',
+                                            ),
+                                          ));
+                                    },
+                                    readOnly: true,
                                     decoration: InputDecoration(
                                         prefixIcon: Row(
                                           children: const [
@@ -188,7 +215,30 @@ class _HomePageState extends State<HomePage>
                                         border: InputBorder.none),
                                   )
                                 : TextFormField(
-                                    onTap: () {},
+                                    onTap: () {
+                                      var anidataindex =
+                                          animatedtextcopy.indexOf(anitext);
+
+                                      if (anidataindex <= 5) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => SearchPage(
+                                                  textvalue: animatedtextcopy[
+                                                      anidataindex == 0
+                                                          ? 0
+                                                          : anidataindex + 1
+                                                      //     ?
+                                                      //     : 0
+                                                      // <= 1 ||
+                                                      //         anidataindex > 5
+                                                      //     ? 0
+                                                      //     : anidataindex + 1
+                                                      ]),
+                                            ));
+                                      }
+                                    },
+                                    readOnly: true,
                                     decoration: InputDecoration(
                                         prefixIcon: Row(
                                           children: [
@@ -203,6 +253,33 @@ class _HomePageState extends State<HomePage>
                                               width: 5,
                                             ),
                                             AnimatedTextKit(
+                                              onTap: () {
+                                                // var anidataindex =
+                                                //     animatedtextcopy
+                                                //         .indexOf(anitext);
+                                                // Navigator.push(
+                                                //     context,
+                                                //     MaterialPageRoute(
+                                                //       builder: (context) => SearchPage(
+                                                //           textvalue:
+                                                //               animatedtextcopy[
+                                                //                   anidataindex
+                                                //                   >=
+                                                //                           1
+                                                //                       ? anidataindex -
+                                                //                           1
+                                                //                       : 0
+                                                //                       ]),
+                                                //     ));
+                                              },
+                                              onNext: (p0, p1) {
+                                                setState(
+                                                  () {
+                                                    anitext =
+                                                        animatedtextcopy[p0];
+                                                  },
+                                                );
+                                              },
                                               pause: const Duration(seconds: 2),
                                               stopPauseOnTap: true,
                                               displayFullTextOnTap: true,
@@ -453,24 +530,26 @@ class _HomePageState extends State<HomePage>
                                                     BorderRadius.circular(12),
                                                 child: GestureDetector(
                                                   onTap: () {
-                                                    context.router.push(
-                                                        CategoryRoute(
-                                                            // description: firstitemlist[2][index]!.description.toString(),
-                                                            // distance: firstitemlist[2][index]!.distance.toString(),
-                                                            id: firstitemlist[2]
-                                                                    [index]!
-                                                                .id
-                                                                .toString(),
-                                                            // img: firstitemlist[2][index]!.img.toString(),
-                                                            // note: firstitemlist[2][index]!.,
-                                                            // rating: firstitemlist[2][index]!.rating.toString(),
-                                                            //  time: firstitemlist[2][index]!.time.toString(),
-                                                            title: firstitemlist[
-                                                                    2][index]!
-                                                                .title
-                                                                .toString()));
+                                                    context.router
+                                                        .push(ProductUpperRoute(
+                                                      id: firstitemlist[2]
+                                                              [index]!
+                                                          .id
+                                                          .toString(),
+                                                      title: firstitemlist[2]
+                                                              [index]!
+                                                          .title
+                                                          .toString(),
+                                                      // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                                      autoscroll: false,
+                                                      searcgcategoryname: '',
+                                                      finalindex: 0,
+                                                      products: null,
+                                                      // products: null,
+                                                      // finalindex: 5
+                                                    ));
                                                   },
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     height: 120,
                                                     width: 210,
                                                     child: Stack(
@@ -517,48 +596,49 @@ class _HomePageState extends State<HomePage>
                                                                   const EdgeInsets
                                                                           .only(
                                                                       left: 8),
-                                                              child: Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                  color: const Color
-                                                                          .fromARGB(
-                                                                      255,
-                                                                      17,
-                                                                      153,
-                                                                      106),
-                                                                ),
-                                                                height: 20,
-                                                                width: 120,
-                                                                child: Row(
-                                                                  children: [
-                                                                    const SizedBox(
-                                                                      width: 3,
+                                                              child: firstitemlist[2]
+                                                                              [
+                                                                              index]!
+                                                                          .offerDescription ==
+                                                                      ""
+                                                                  ? Container()
+                                                                  : Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(5),
+                                                                        color: const Color.fromARGB(
+                                                                            255,
+                                                                            17,
+                                                                            153,
+                                                                            106),
+                                                                      ),
+                                                                      height:
+                                                                          20,
+                                                                      width:
+                                                                          120,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                3,
+                                                                          ),
+                                                                          Transform.rotate(
+                                                                              angle: 20.7,
+                                                                              child: const Icon(
+                                                                                Icons.local_offer,
+                                                                                color: Colors.white,
+                                                                                size: 12,
+                                                                              )),
+                                                                          Text(
+                                                                            "${firstitemlist[2][index]!.offerDescription}",
+                                                                            style:
+                                                                                const TextStyle(color: Colors.white, fontSize: 12),
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                    Transform.rotate(
-                                                                        angle: 20.7,
-                                                                        child: const Icon(
-                                                                          Icons
-                                                                              .local_offer,
-                                                                          color:
-                                                                              Colors.white,
-                                                                          size:
-                                                                              12,
-                                                                        )),
-                                                                    Text(
-                                                                      "${firstitemlist[2][index]!.offerDescription}",
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontSize:
-                                                                              12),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
                                                             ),
                                                           ],
                                                         )
@@ -691,34 +771,50 @@ class _HomePageState extends State<HomePage>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(
-                                                height: 85,
-                                                width: 80,
-                                                child: CachedNetworkImage(
-                                                    fadeInDuration:
-                                                        const Duration(
-                                                            seconds: 2),
-                                                    imageUrl:
-                                                        'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[3][index]!.img}',
-                                                    fit: BoxFit.cover,
-                                                    progressIndicatorBuilder:
-                                                        (context, url,
-                                                            downloadProgress) {
-                                                      return const Skeleton(
-                                                        radius: 30,
-                                                        height: 85,
-                                                        width: 80,
-                                                      );
-                                                    },
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        const Center(
-                                                            child: Text(
-                                                          "bad network",
-                                                          style: TextStyle(
-                                                              color: Colors.red,
-                                                              fontSize: 10),
-                                                        ))),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SearchRestuarentFilter(
+                                                                itemname: firstitemlist[
+                                                                            3]
+                                                                        [index]!
+                                                                    .title
+                                                                    .toString(),
+                                                              )));
+                                                },
+                                                child: SizedBox(
+                                                  height: 85,
+                                                  width: 80,
+                                                  child: CachedNetworkImage(
+                                                      fadeInDuration:
+                                                          const Duration(
+                                                              seconds: 2),
+                                                      imageUrl:
+                                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[3][index]!.img}',
+                                                      fit: BoxFit.cover,
+                                                      progressIndicatorBuilder:
+                                                          (context, url,
+                                                              downloadProgress) {
+                                                        return const Skeleton(
+                                                          radius: 30,
+                                                          height: 85,
+                                                          width: 80,
+                                                        );
+                                                      },
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          const Center(
+                                                              child: Text(
+                                                            "bad network",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 10),
+                                                          ))),
+                                                ),
                                               ),
                                               Align(
                                                 alignment: Alignment.center,
@@ -786,94 +882,121 @@ class _HomePageState extends State<HomePage>
 
                                       itemCount: firstitemlist[4].length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, left: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 140,
-                                                width: 140,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  child: CachedNetworkImage(
-                                                      fadeInDuration:
-                                                          const Duration(
-                                                              seconds: 2),
-                                                      imageUrl:
-                                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[4][index]!.img}',
-                                                      fit: BoxFit.cover,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              downloadProgress) {
-                                                        return const Skeleton(
-                                                          radius: 20,
-                                                          height: 140,
-                                                          width: 140,
-                                                        );
-                                                      },
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          const Center(
-                                                              child: Text(
-                                                            "bad network",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontSize: 10),
-                                                          ))),
+                                        return InkWell(
+                                          onTap: () {
+                                            context.router
+                                                .push(ProductUpperRoute(
+                                              id: firstitemlist[4][index]!
+                                                  .id
+                                                  .toString(),
+                                              title: firstitemlist[4][index]!
+                                                  .title
+                                                  .toString(),
+                                              // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                              autoscroll: false,
+                                              searcgcategoryname: '',
+                                              finalindex: 0,
+                                              products: null,
+                                              // products: null,
+                                              // finalindex: 5
+                                            ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20, left: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 140,
+                                                  width: 140,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    child: CachedNetworkImage(
+                                                        fadeInDuration:
+                                                            const Duration(
+                                                                seconds: 2),
+                                                        imageUrl:
+                                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[4][index]!.img}',
+                                                        fit: BoxFit.cover,
+                                                        progressIndicatorBuilder:
+                                                            (context, url,
+                                                                downloadProgress) {
+                                                          return const Skeleton(
+                                                            radius: 20,
+                                                            height: 140,
+                                                            width: 140,
+                                                          );
+                                                        },
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Text(
+                                                              "bad network",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 10),
+                                                            ))),
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "${firstitemlist[4][index]!.title}",
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black87,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                "${firstitemlist[4][index]!.description}",
-                                                style: const TextStyle(
-                                                    fontSize: 10,
-                                                    color: Color.fromARGB(
-                                                        255, 131, 130, 130)),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "${firstitemlist[4][index]!.time}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[4][index]!.distance}",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "${firstitemlist[4][index]!.title}",
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black87,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Text(
+                                                  "${firstitemlist[4][index]!.description}",
+                                                  style: const TextStyle(
+                                                      fontSize: 10,
+                                                      color: Color.fromARGB(
+                                                          255, 131, 130, 130)),
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "${firstitemlist[4][index]!.time}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[4][index]!.distance}",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },
@@ -964,122 +1087,152 @@ class _HomePageState extends State<HomePage>
 
                                       itemCount: firstitemlist[5].length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, left: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 140,
-                                                width: 249,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  child: CachedNetworkImage(
-                                                      fadeInDuration:
-                                                          const Duration(
-                                                              seconds: 2),
-                                                      imageUrl:
-                                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[5][index]!.img}',
-                                                      fit: BoxFit.cover,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              downloadProgress) {
-                                                        return const Skeleton(
-                                                          radius: 20,
-                                                          height: 140,
-                                                          width: 249,
-                                                        );
-                                                      },
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          const Center(
-                                                              child: Text(
-                                                            "bad network",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontSize: 10),
-                                                          ))),
+                                        return InkWell(
+                                          onTap: () {
+                                            context.router
+                                                .push(ProductUpperRoute(
+                                              id: firstitemlist[5][index]!
+                                                  .id
+                                                  .toString(),
+                                              title: firstitemlist[5][index]!
+                                                  .title
+                                                  .toString(),
+                                              // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                              autoscroll: false,
+                                              searcgcategoryname: '',
+                                              finalindex: 0,
+                                              products: null,
+                                              // products: null,
+                                              // finalindex: 5
+                                            ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20, left: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 140,
+                                                  width: 249,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    child: CachedNetworkImage(
+                                                        fadeInDuration:
+                                                            const Duration(
+                                                                seconds: 2),
+                                                        imageUrl:
+                                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[5][index]!.img}',
+                                                        fit: BoxFit.cover,
+                                                        progressIndicatorBuilder:
+                                                            (context, url,
+                                                                downloadProgress) {
+                                                          return const Skeleton(
+                                                            radius: 20,
+                                                            height: 140,
+                                                            width: 249,
+                                                          );
+                                                        },
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Text(
+                                                              "bad network",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 10),
+                                                            ))),
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "${firstitemlist[5][index]!.title}",
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black87,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 130,
-                                                  ),
-                                                  const Icon(
-                                                    Icons.favorite_outline,
-                                                    size: 18,
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                firstitemlist[5][index]!
-                                                            .description !=
-                                                        null
-                                                    ? "${firstitemlist[5][index]!.description}"
-                                                    : "",
-                                                style: const TextStyle(
-                                                  fontSize: 10,
-                                                  color: Color.fromARGB(
-                                                      255, 131, 130, 130),
+                                                const SizedBox(
+                                                  height: 10,
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    size: 13,
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "${firstitemlist[5][index]!.title}",
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 130,
+                                                    ),
+                                                    const Icon(
+                                                      Icons.favorite_outline,
+                                                      size: 18,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  firstitemlist[5][index]!
+                                                              .description !=
+                                                          null
+                                                      ? "${firstitemlist[5][index]!.description}"
+                                                      : "",
+                                                  style: const TextStyle(
+                                                    fontSize: 10,
                                                     color: Color.fromARGB(
-                                                        255, 226, 209, 53),
+                                                        255, 131, 130, 130),
                                                   ),
-                                                  Text(
-                                                    "${firstitemlist[5][index]!.rating}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[5][index]!.time}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[5][index]!.distance}",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.star,
+                                                      size: 13,
+                                                      color: Color.fromARGB(
+                                                          255, 226, 209, 53),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[5][index]!.rating}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[5][index]!.time}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[5][index]!.distance}",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },
@@ -1163,109 +1316,139 @@ class _HomePageState extends State<HomePage>
 
                                       itemCount: firstitemlist[6].length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, left: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 140,
-                                                width: 249,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  child: CachedNetworkImage(
-                                                      fadeInDuration:
-                                                          const Duration(
-                                                              seconds: 2),
-                                                      imageUrl:
-                                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[6][index]!.img}',
-                                                      fit: BoxFit.cover,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              downloadProgress) {
-                                                        return const Skeleton(
-                                                          radius: 20,
-                                                          height: 140,
-                                                          width: 249,
-                                                        );
-                                                      },
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          const Center(
-                                                              child: Text(
-                                                            "bad network",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontSize: 10),
-                                                          ))),
+                                        return InkWell(
+                                          onTap: () {
+                                            context.router
+                                                .push(ProductUpperRoute(
+                                              id: firstitemlist[6][index]!
+                                                  .id
+                                                  .toString(),
+                                              title: firstitemlist[6][index]!
+                                                  .title
+                                                  .toString(),
+                                              // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                              autoscroll: false,
+                                              searcgcategoryname: '',
+                                              finalindex: 0,
+                                              products: null,
+                                              // products: null,
+                                              // finalindex: 5
+                                            ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20, left: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 140,
+                                                  width: 249,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    child: CachedNetworkImage(
+                                                        fadeInDuration:
+                                                            const Duration(
+                                                                seconds: 2),
+                                                        imageUrl:
+                                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[6][index]!.img}',
+                                                        fit: BoxFit.cover,
+                                                        progressIndicatorBuilder:
+                                                            (context, url,
+                                                                downloadProgress) {
+                                                          return const Skeleton(
+                                                            radius: 20,
+                                                            height: 140,
+                                                            width: 249,
+                                                          );
+                                                        },
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Text(
+                                                              "bad network",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 10),
+                                                            ))),
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "${firstitemlist[6][index]!.title}",
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black87,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                "${firstitemlist[6][index]!.description}",
-                                                style: const TextStyle(
-                                                    fontSize: 10,
-                                                    color: Color.fromARGB(
-                                                        255, 131, 130, 130)),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    size: 13,
-                                                    color: Color.fromARGB(
-                                                        255, 226, 209, 53),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[6][index]!.rating}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[6][index]!.time}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[6][index]!.distance}",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "${firstitemlist[6][index]!.title}",
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black87,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Text(
+                                                  "${firstitemlist[6][index]!.description}",
+                                                  style: const TextStyle(
+                                                      fontSize: 10,
+                                                      color: Color.fromARGB(
+                                                          255, 131, 130, 130)),
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.star,
+                                                      size: 13,
+                                                      color: Color.fromARGB(
+                                                          255, 226, 209, 53),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[6][index]!.rating}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[6][index]!.time}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[6][index]!.distance}",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },
@@ -1356,140 +1539,160 @@ class _HomePageState extends State<HomePage>
 
                                       itemCount: firstitemlist[7].length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, left: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                  height: 180,
-                                                  width: 330,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: Stack(
-                                                      fit: StackFit.expand,
-                                                      children: [
-                                                        CachedNetworkImage(
-                                                            fadeInDuration:
-                                                                const Duration(
-                                                                    seconds: 2),
-                                                            imageUrl:
-                                                                'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[7][index]!.img}',
-                                                            fit: BoxFit.cover,
-                                                            progressIndicatorBuilder:
-                                                                (context, url,
-                                                                    downloadProgress) {
-                                                              return const Skeleton(
-                                                                radius: 15,
-                                                                height: 180,
-                                                                width: 330,
-                                                              );
-                                                            },
-                                                            errorWidget: (context,
-                                                                    url,
-                                                                    error) =>
-                                                                const Center(
-                                                                    child: Text(
-                                                                  "bad network",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .red,
-                                                                      fontSize:
-                                                                          10),
-                                                                ))),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 0,
-                                                                  bottom: 0),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              const SizedBox(
-                                                                height: 10,
-                                                              ),
-                                                              SizedBox(
-                                                                height: 90,
-                                                                // width: 330,
-                                                                child: Card(
-                                                                  color: const Color
-                                                                          .fromARGB(
-                                                                      0,
-                                                                      1,
-                                                                      0,
-                                                                      0),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            8.0),
+                                        return InkWell(
+                                          onTap: () {
+                                            context.router
+                                                .push(ProductUpperRoute(
+                                              id: firstitemlist[7][index]!
+                                                  .id
+                                                  .toString(),
+                                              title: firstitemlist[7][index]!
+                                                  .title
+                                                  .toString(),
+                                              // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                              autoscroll: false,
+                                              searcgcategoryname: '',
+                                              finalindex: 0,
+                                              products: null,
+                                              // products: null,
+                                              // finalindex: 5
+                                            ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20, left: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                    height: 180,
+                                                    width: 330,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      child: Stack(
+                                                        fit: StackFit.expand,
+                                                        children: [
+                                                          CachedNetworkImage(
+                                                              fadeInDuration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          2),
+                                                              imageUrl:
+                                                                  'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[7][index]!.img}',
+                                                              fit: BoxFit.cover,
+                                                              progressIndicatorBuilder:
+                                                                  (context, url,
+                                                                      downloadProgress) {
+                                                                return const Skeleton(
+                                                                  radius: 15,
+                                                                  height: 180,
+                                                                  width: 330,
+                                                                );
+                                                              },
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  const Center(
+                                                                      child:
+                                                                          Text(
+                                                                    "bad network",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red,
+                                                                        fontSize:
+                                                                            10),
+                                                                  ))),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 0,
+                                                                    bottom: 0),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                const SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 90,
+                                                                  // width: 330,
+                                                                  child: Card(
+                                                                    color: const Color
+                                                                            .fromARGB(
+                                                                        0,
+                                                                        1,
+                                                                        0,
+                                                                        0),
                                                                     child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .stretch,
-                                                                      children: [
-                                                                        Text(
-                                                                          "${firstitemlist[7][index]!.title}",
-                                                                          style: const TextStyle(
-                                                                              fontSize: 23,
-                                                                              color: Colors.white,
-                                                                              fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              3,
-                                                                        ),
-                                                                        Text(
-                                                                          "${firstitemlist[7][index]!.description}",
-                                                                          style: const TextStyle(
-                                                                              fontSize: 13,
-                                                                              color: Colors.white),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              3,
-                                                                        ),
-                                                                        Row(
-                                                                          children: [
-                                                                            Text(
-                                                                              "${firstitemlist[7][index]!.time}\t",
-                                                                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
-                                                                            ),
-                                                                            Text(
-                                                                              "${firstitemlist[7][index]!.distance}",
-                                                                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
-                                                                            ),
-                                                                            const Icon(
-                                                                              Icons.star,
-                                                                              size: 13,
-                                                                              color: Color.fromARGB(255, 226, 209, 53),
-                                                                            ),
-                                                                            Text(
-                                                                              "${firstitemlist[7][index]!.rating}",
-                                                                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
-                                                                            ),
-                                                                          ],
-                                                                        )
-                                                                      ],
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.stretch,
+                                                                        children: [
+                                                                          Text(
+                                                                            "${firstitemlist[7][index]!.title}",
+                                                                            style: const TextStyle(
+                                                                                fontSize: 23,
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                3,
+                                                                          ),
+                                                                          Text(
+                                                                            "${firstitemlist[7][index]!.description}",
+                                                                            style:
+                                                                                const TextStyle(fontSize: 13, color: Colors.white),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                3,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                "${firstitemlist[7][index]!.time}\t",
+                                                                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                                                              ),
+                                                                              Text(
+                                                                                "${firstitemlist[7][index]!.distance}",
+                                                                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                                                              ),
+                                                                              const Icon(
+                                                                                Icons.star,
+                                                                                size: 13,
+                                                                                color: Color.fromARGB(255, 226, 209, 53),
+                                                                              ),
+                                                                              Text(
+                                                                                "${firstitemlist[7][index]!.rating}",
+                                                                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                                                              ),
+                                                                            ],
+                                                                          )
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ))
-                                            ],
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ))
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },
@@ -1580,144 +1783,173 @@ class _HomePageState extends State<HomePage>
 
                                       itemCount: firstitemlist[8].length,
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, left: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: 140,
-                                                width: 249,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  child: CachedNetworkImage(
-                                                      fadeInDuration:
-                                                          const Duration(
-                                                              seconds: 2),
-                                                      imageUrl:
-                                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[8][index]!.img}',
-                                                      fit: BoxFit.cover,
-                                                      progressIndicatorBuilder:
-                                                          (context, url,
-                                                              downloadProgress) {
-                                                        return const Skeleton(
-                                                          radius: 15,
-                                                          height: 140,
-                                                          width: 249,
-                                                        );
-                                                      },
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          const Center(
-                                                              child: Text(
-                                                            "bad network",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.red,
-                                                                fontSize: 10),
-                                                          ))),
+                                        return InkWell(
+                                          onTap: () {
+                                            context.router
+                                                .push(ProductUpperRoute(
+                                              id: firstitemlist[8][index]!
+                                                  .id
+                                                  .toString(),
+                                              title: firstitemlist[8][index]!
+                                                  .title
+                                                  .toString(),
+                                              // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                              autoscroll: false,
+                                              searcgcategoryname: '',
+                                              finalindex: 0,
+                                              products: null,
+                                            ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20, left: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 140,
+                                                  width: 249,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    child: CachedNetworkImage(
+                                                        fadeInDuration:
+                                                            const Duration(
+                                                                seconds: 2),
+                                                        imageUrl:
+                                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[8][index]!.img}',
+                                                        fit: BoxFit.cover,
+                                                        progressIndicatorBuilder:
+                                                            (context, url,
+                                                                downloadProgress) {
+                                                          return const Skeleton(
+                                                            radius: 15,
+                                                            height: 140,
+                                                            width: 249,
+                                                          );
+                                                        },
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Text(
+                                                              "bad network",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 10),
+                                                            ))),
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "${firstitemlist[8][index]!.title}",
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black87,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 70,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: const [
-                                                          Icon(
-                                                            Icons
-                                                                .favorite_outline,
-                                                            size: 18,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 60,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                firstitemlist[8][index]!
-                                                            .description !=
-                                                        null
-                                                    ? "${firstitemlist[8][index]!.description}"
-                                                    : "",
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black87,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    size: 13,
-                                                    color: Color.fromARGB(
-                                                        255, 226, 209, 53),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[8][index]!.rating}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[8][index]!.time}\t",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                  Text(
-                                                    "${firstitemlist[8][index]!.distance}",
-                                                    style: const TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color.fromARGB(
-                                                            255, 97, 120, 131)),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "${firstitemlist[8][index]!.title}",
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 70,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: const [
+                                                            Icon(
+                                                              Icons
+                                                                  .favorite_outline,
+                                                              size: 18,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 60,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Text(
+                                                  firstitemlist[8][index]!
+                                                              .description !=
+                                                          null
+                                                      ? "${firstitemlist[8][index]!.description}"
+                                                      : "",
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black87,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.star,
+                                                      size: 13,
+                                                      color: Color.fromARGB(
+                                                          255, 226, 209, 53),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[8][index]!.rating}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[8][index]!.time}\t",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                    Text(
+                                                      "${firstitemlist[8][index]!.distance}",
+                                                      style: const TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              97,
+                                                              120,
+                                                              131)),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },

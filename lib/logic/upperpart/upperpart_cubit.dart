@@ -10,13 +10,20 @@ import 'package:foodwifi/model/upperpartmodel.dart';
 import 'package:http/http.dart' as http;
 
 class UpperPartCubit extends Cubit<UpperPartState> {
-  UpperPartCubit() : super(const UpperPartState()) {
-    uppergetalldata();
-  }
+  UpperPartCubit()
+      : super(const UpperPartState(
+          status: Status.initial,
+        ));
+  bool get isLoading => state.status == Status.loading;
 
-  Future<UpperPartModel?> uppergetalldata({
-    String? id,
-  }) async {
+  Future<void> uppergetalldata(
+    String id,
+  ) async {
+    if (isLoading) {
+      return;
+    }
+    emit(const UpperPartState(status: Status.loading));
+    log(isLoading.toString());
     try {
       final queryParameters = {
         'lat': '24.805823',
@@ -36,16 +43,16 @@ class UpperPartCubit extends Cubit<UpperPartState> {
         var users = UpperPartModel.fromJson(data);
 
         log('Successfully get upper Data');
-        //log(users.title.toString());
-        // emit(UpperPartState(
-        //   alldata: users,
-        // ));
-        return users;
+
+        emit(UpperPartState(status: Status.loaded, alldata: users));
       } else {
-        log('Failed to Getdata.');
+        emit(const UpperPartState(status: Status.error));
       }
     } catch (e) {
-      // log(e.toString());
+      log("comming fron uppre cubit");
+      log("ERROR come from upper cubit" + e.toString());
+      log("comming fron uppre cubit");
+      emit(const UpperPartState(status: Status.error));
     }
   }
 }

@@ -1,46 +1,43 @@
 // // To parse this JSON data, do
 // //
-// //     final welcome = welcomeFromJson(jsonString);
+// //     final bellowanotherModel = bellowanotherModelFromJson(jsonString);
 
+// import 'package:meta/meta.dart';
 // import 'dart:convert';
 
-// List<CategoryModel?>? productmodelFromJson(String str) =>
-//     List<CategoryModel?>.from(
-//         json.decode(str)!.map((x) => CategoryModel.fromJson(x)));
+// BellowanotherModel bellowanotherModelFromJson(String str) =>
+//     BellowanotherModel.fromJson(json.decode(str));
 
-// String productmodelToJson(List<CategoryModel?>? data) => json.encode(
-//     data == null ? [] : List<dynamic>.from(data.map((x) => x!.toJson())));
+// String bellowanotherModelToJson(BellowanotherModel data) =>
+//     json.encode(data.toJson());
 
-// class CategoryModel {
-//   CategoryModel({
+// class BellowanotherModel {
+//   BellowanotherModel({
 //     required this.categoryId,
 //     required this.stock,
 //     required this.categoryName,
 //     required this.products,
 //   });
 
-//   final int? categoryId;
-//   final bool? stock;
-//   final String? categoryName;
-//   final List<Product?>? products;
+//   final int categoryId;
+//   final bool stock;
+//   late final String categoryName;
+//   final List<Product> products;
 
-//   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+//   factory BellowanotherModel.fromJson(Map<String, dynamic> json) =>
+//       BellowanotherModel(
 //         categoryId: json["category_id"],
 //         stock: json["stock"],
 //         categoryName: json["category_name"],
-//         products: json["products"] == null
-//             ? []
-//             : List<Product?>.from(
-//                 json["products"]!.map((x) => Product.fromJson(x))),
+//         products: List<Product>.from(
+//             json["products"].map((x) => Product.fromJson(x))),
 //       );
 
 //   Map<String, dynamic> toJson() => {
 //         "category_id": categoryId,
 //         "stock": stock,
 //         "category_name": categoryName,
-//         "products": products == null
-//             ? []
-//             : List<dynamic>.from(products!.map((x) => x!.toJson())),
+//         "products": List<dynamic>.from(products.map((x) => x.toJson())),
 //       };
 // }
 
@@ -66,7 +63,7 @@
 //   final bool isOffer;
 //   final String offerType;
 //   final Offer offer;
-//   final int price;
+//   final dynamic price;
 //   final String img;
 //   final String type;
 //   final String description;
@@ -84,9 +81,7 @@
 //         img: json["img"],
 //         type: json["type"],
 //         description: json["description"],
-//         tags: json["tags"] == null
-//             ? []
-//             : List<dynamic>.from(json["tags"]!.map((x) => x)),
+//         tags: List<dynamic>.from(json["tags"].map((x) => x)),
 //         customizable: json["customizable"],
 //       );
 
@@ -101,7 +96,7 @@
 //         "img": img,
 //         "type": type,
 //         "description": description,
-//         "tags": tags == null ? [] : List<dynamic>.from(tags.map((x) => x)),
+//         "tags": List<dynamic>.from(tags.map((x) => x)),
 //         "customizable": customizable,
 //       };
 // }
@@ -123,7 +118,7 @@
 //         offerPc: json["offerPc"],
 //         description: json["description"],
 //         offerUpto: json["offerUpto"],
-//         offerPrice: json["offerPrice"].toDouble(),
+//         offerPrice: json["offerPrice"]?.toDouble(),
 //       );
 
 //   Map<String, dynamic> toJson() => {
