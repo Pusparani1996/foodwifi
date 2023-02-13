@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/searchrestuarentfilter/searchfilter_cubit.dart';
-import 'package:foodwifi/logic/searchrestuarentfilter/searchfilter_state.dart';
+
 import 'package:foodwifi/model/searchrestuarentfilter.dart';
+import 'package:foodwifi/pages/cusinoesPage.dart';
 import 'package:foodwifi/pages/productupper.dart';
+import 'package:foodwifi/pages/sortby_page.dart';
+import 'package:foodwifi/pages/storetypespage.dart';
 import 'package:foodwifi/serviceapi/serviceapi.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -14,8 +17,25 @@ import '../model/joinmodel.dart';
 
 class SearchRestuarentFilter extends StatefulWidget {
   final String itemname;
+  final bool fromsearchonly;
+  final String? cusinesid;
+  final String? sorttypeid;
+  final String? sortbyid;
+  //  For green light at tabbar
+  final String? cusines;
+  final String? storetypes;
+  final String? sortby;
 
-  const SearchRestuarentFilter({super.key, required this.itemname});
+  const SearchRestuarentFilter(
+      {super.key,
+      required this.itemname,
+      required this.fromsearchonly,
+      required this.cusinesid,
+      required this.sorttypeid,
+      required this.sortbyid,
+      required this.cusines,
+      required this.storetypes,
+      required this.sortby});
 
   @override
   State<SearchRestuarentFilter> createState() => _SearchRestuarentFilterState();
@@ -23,13 +43,12 @@ class SearchRestuarentFilter extends StatefulWidget {
 
 class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
   ScrollController controller = ScrollController();
-  // List<SearchResturantFilterModel> pageonedata = [];
-  // List<SearchResturantFilterModel> pagetwodata = [];
-  // List<SearchResturantFilterModel> allpagedata = [];
+
   List<SearchResturantFilterModel> searchretuarantlist = [];
 
   int page = 1;
   bool? ismoreloading;
+  bool? foundempty;
 
   // below parameter are used for Navigate to productupperpage for auto navigate to detailspage
   bool autoscroll = false;
@@ -46,6 +65,9 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
           isMoredata: true,
           page: 1,
           itemname: widget.itemname,
+          cusinid: widget.cusinesid,
+          sortbyid: widget.sortbyid,
+          sorttypeid: widget.sorttypeid,
         );
 
     controller.addListener(() async {
@@ -60,6 +82,9 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                     isMoredata: true,
                     page: page,
                     itemname: widget.itemname,
+                    cusinid: widget.cusinesid,
+                    sortbyid: widget.sortbyid,
+                    sorttypeid: widget.sorttypeid,
                   );
           setState(() {
             searchretuarantlist = searchretuarantlist + allpagedata!;
@@ -75,6 +100,9 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
               isMoredata: true,
               page: 1,
               itemname: widget.itemname,
+              cusinid: widget.cusinesid,
+              sortbyid: widget.sortbyid,
+              sorttypeid: widget.sorttypeid,
             );
 
     setState(() {
@@ -121,10 +149,16 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
     final searchresturant = context.watch<SearchFilterCubit>().state;
 
     ismoreloading = searchresturant.isloading;
+    foundempty = searchresturant.foundempty;
+    // log("found empty : ${foundempty.toString()}");
+    // log("from search : ${widget.fromsearchonly.toString()}");
+    log("from search Sort by : ${widget.sortby.toString()}");
+    log("from search Cusines : ${widget.cusines.toString()}");
+    log("from search Store types : ${widget.storetypes.toString()}");
 
     List tabbar = [
       "Sort by",
-      "Sort types",
+      "Store types",
       "Cuisines",
       "Free delivery",
       "Halal",
@@ -132,87 +166,279 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
     ];
 
     return searchretuarantlist.isEmpty
-        ? Container(
-            color: Colors.grey,
-            child: SafeArea(
-              child: Container(
-                color: Colors.white,
+        ? foundempty!
+            ? SafeArea(
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: const Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.black54,
-                              size: 15,
-                            )),
-                        Text(
-                          widget.itemname,
-                          style: const TextStyle(
-                              color: Colors.black54, fontSize: 15),
-                        ),
-                        const SizedBox(
-                          width: 30,
-                        )
-                      ],
-                    ),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          child: Row(
+                    widget.fromsearchonly
+                        ? const SizedBox()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Skeleton(height: 90, width: 90, radius: 4),
+                              IconButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.black54,
+                                    size: 15,
+                                  )),
+                              widget.itemname.isEmpty
+                                  ? const Text(
+                                      "Foods near you",
+                                      style: TextStyle(
+                                          color: Colors.black54, fontSize: 15),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        widget.itemname,
+                                        style: const TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 15),
+                                      ),
+                                    ),
                               const SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Skeleton(
-                                    radius: 4,
-                                    height: 25,
-                                    width: 230,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Skeleton(
-                                    radius: 4,
-                                    height: 25,
-                                    width: 180,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Skeleton(
-                                    radius: 4,
-                                    height: 25,
-                                    width: 230,
-                                  ),
-                                ],
+                                width: 30,
                               )
                             ],
                           ),
-                        );
-                      },
-                    ),
+                    // TABBAR FOR ERROR
+                    // Container(
+                    //   //height: 100,
+                    //   color: Colors.white,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: SizedBox(
+                    //       height: 30,
+                    //       child: ListView.builder(
+                    //         shrinkWrap: true,
+                    //         scrollDirection: Axis.horizontal,
+                    //         itemCount: tabbar.length,
+                    //         itemBuilder: (context, index) {
+                    //           return Padding(
+                    //             padding: const EdgeInsets.only(left: 10),
+                    //             child: Container(
+                    //               height: 15,
+                    //               decoration: BoxDecoration(
+                    //                   color: tabbar[index] == widget.cusines ||
+                    //                           tabbar[index] ==
+                    //                               widget.storetypes ||
+                    //                           tabbar[index] == widget.sortby
+                    //                       ? const Color.fromARGB(
+                    //                           255, 92, 221, 206)
+                    //                       : Color.fromARGB(255, 189, 191, 191),
+                    //                   borderRadius: BorderRadius.circular(20)),
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.all(8.0),
+                    //                 child: Center(
+                    //                     child: Text(
+                    //                   tabbar[index],
+                    //                   style: const TextStyle(fontSize: 12),
+                    //                 )),
+                    //               ),
+                    //             ),
+                    //           );
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+
                     Container(
-                      color: const Color.fromARGB(255, 208, 212, 212),
-                      height: 10,
-                    )
+                      // height: 100,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 30,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: tabbar.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  if (index == 0) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SortByPage(
+                                            cusines: widget.cusines,
+                                            storetypes: widget.storetypes,
+                                            showsearchrestuarent: true,
+                                            abovetxt: widget.itemname,
+                                          ),
+                                        ));
+                                  } else if (index == 1) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => StoreTypesPage(
+                                            cusines: widget.cusines,
+                                            storetypes: widget.storetypes,
+                                            showsearchrestuarent: true,
+                                            abovetxt: widget.itemname,
+                                          ),
+                                        ));
+                                  } else if (index == 2) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CusinesPage(
+                                            cusines: widget.cusines,
+                                            storetypes: widget.storetypes,
+                                            showsearchrestuarent: true,
+                                            abovetxt: widget.itemname,
+                                          ),
+                                        ));
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    height: 15,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            //  tabbar[index] ==
+                                            //                 widget.cusines &&
+                                            //             tabbar[index] ==
+                                            //                 widget.sortby ||
+                                            tabbar[index] == widget.sortby ||
+                                                    tabbar[index] ==
+                                                        widget.storetypes ||
+                                                    tabbar[index] ==
+                                                        widget.cusines
+
+                                                // ? tabbar[index] ==
+                                                //             widget.cusines ||
+                                                //         tabbar[index] ==
+                                                //             widget.storetypes
+                                                ? const Color.fromARGB(
+                                                    255, 92, 221, 206)
+                                                : Colors.amber,
+
+                                        // : const Color.fromARGB(
+                                        //     255, 213, 221, 221),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                          child: Text(
+                                        tabbar[index],
+                                        style: const TextStyle(fontSize: 12),
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: Image.asset(
+                          "assets/images/empty.jpg",
+                          fit: BoxFit.fill,
+                        )),
                   ],
                 ),
-              ),
-            ),
-          )
+              )
+            : Container(
+                color: Colors.grey,
+                child: SafeArea(
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        widget.fromsearchonly
+                            ? const SizedBox()
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      icon: const Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Colors.black54,
+                                        size: 15,
+                                      )),
+                                  widget.itemname.isEmpty
+                                      ? const Text(
+                                          "Foods near you",
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 15),
+                                        )
+                                      : Text(
+                                          widget.itemname,
+                                          style: const TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 15),
+                                        ),
+                                  const SizedBox(
+                                    width: 30,
+                                  )
+                                ],
+                              ),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              child: Row(
+                                children: [
+                                  const Skeleton(
+                                      height: 90, width: 90, radius: 4),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: const [
+                                      Skeleton(
+                                        radius: 4,
+                                        height: 25,
+                                        width: 230,
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Skeleton(
+                                        radius: 4,
+                                        height: 25,
+                                        width: 180,
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Skeleton(
+                                        radius: 4,
+                                        height: 25,
+                                        width: 230,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        Container(
+                          color: const Color.fromARGB(255, 208, 212, 212),
+                          height: 10,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
         : Scaffold(
             body: Container(
             color: Colors.white,
@@ -228,26 +454,43 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    icon: const Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Colors.black54,
-                                      size: 15,
-                                    )),
-                                Text(
-                                  widget.itemname,
-                                  style: const TextStyle(
-                                      color: Colors.black54, fontSize: 15),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                )
-                              ],
-                            ),
+                            widget.fromsearchonly
+                                ? const SizedBox()
+                                : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: const Icon(
+                                            Icons.arrow_back_ios,
+                                            color: Colors.black54,
+                                            size: 15,
+                                          )),
+                                      widget.itemname.isEmpty
+                                          ? const Text(
+                                              "Foods near you",
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 15),
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                widget.itemname,
+                                                style: const TextStyle(
+                                                    color: Colors.black54,
+                                                    fontSize: 15),
+                                              ),
+                                            ),
+                                      const SizedBox(
+                                        width: 30,
+                                      )
+                                    ],
+                                  ),
+
+                            //tabbar list
+
                             SizedBox(
                               height: 30,
                               child: ListView.builder(
@@ -255,28 +498,85 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: tabbar.length,
                                 itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Container(
-                                      height: 15,
-                                      decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 223, 222, 222),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                            child: Text(
-                                          tabbar[index],
-                                          style: const TextStyle(fontSize: 12),
-                                        )),
+                                  return InkWell(
+                                    onTap: () {
+                                      if (index == 0) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => SortByPage(
+                                                cusines: widget.cusines,
+                                                storetypes: widget.storetypes,
+                                                showsearchrestuarent: true,
+                                                abovetxt: widget.itemname,
+                                              ),
+                                            ));
+                                      } else if (index == 1) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoreTypesPage(
+                                                cusines: widget.cusines,
+                                                storetypes: widget.storetypes,
+                                                showsearchrestuarent: true,
+                                                abovetxt: widget.itemname,
+                                              ),
+                                            ));
+                                      } else if (index == 2) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => CusinesPage(
+                                                cusines: widget.cusines,
+                                                storetypes: widget.storetypes,
+                                                showsearchrestuarent: true,
+                                                abovetxt: widget.itemname,
+                                              ),
+                                            ));
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Container(
+                                        height: 15,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                //  tabbar[index] ==
+                                                //                 widget.cusines &&
+                                                //             tabbar[index] ==
+                                                //                 widget.sortby ||
+                                                tabbar[index] ==
+                                                            widget.sortby ||
+                                                        tabbar[index] ==
+                                                            widget.storetypes
+                                                    // ? tabbar[index] ==
+                                                    //             widget.cusines ||
+                                                    //         tabbar[index] ==
+                                                    //             widget.storetypes
+                                                    ? const Color.fromARGB(
+                                                        255, 92, 221, 206)
+                                                    : const Color.fromARGB(
+                                                        255, 220, 228, 228),
+                                            // : const Color.fromARGB(
+                                            //     255, 213, 221, 221),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                              child: Text(
+                                            tabbar[index],
+                                            style:
+                                                const TextStyle(fontSize: 12),
+                                          )),
+                                        ),
                                       ),
                                     ),
                                   );
                                 },
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),

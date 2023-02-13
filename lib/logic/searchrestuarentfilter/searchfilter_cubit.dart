@@ -13,22 +13,30 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
             status: Status.initial,
             isloading: true,
             position: true,
-            searchfilderdatalist: []));
+            searchfilderdatalist: [],
+            foundempty: false));
 
   bool get isLoading => state.status == Status.loading;
+  bool get foundempty => state.status == Status.loading;
+
   bool isMoredata = true;
 
   Future<List<SearchResturantFilterModel>?> getsearchfilter({
     required String itemname,
     required bool isMoredata,
     required int page,
+    required String? cusinid,
+    required String? sorttypeid,
+    required String? sortbyid,
   }) async {
     emit(const SearchFilterState(
         status: Status.loading,
         isloading: false,
         position: true,
-        searchfilderdatalist: []));
-    // log(isLoading.toString());
+        searchfilderdatalist: [],
+        foundempty: false));
+    log("From saerch");
+    log(itemname);
 
     try {
       final queryParameters = {
@@ -36,9 +44,9 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
         'lng': '93.942931',
         "page": page.toString(),
         "_search": itemname,
-        "sort_by": "",
-        "cuisines": "",
-        "store_type_id": "",
+        "sort_by": sortbyid,
+        "cuisines": cusinid,
+        "store_type_id": sorttypeid,
         "halal": "",
         "free_delivery": "",
         "promo": ""
@@ -58,21 +66,29 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
 
           log("Search data lenght  ${searchfilterdata.length}");
 
-          if (searchfilterdata.isNotEmpty) {
-            if (searchfilterdata.length < 15) {
-              isMoredata = false;
+          //  if (searchfilterdata.isNotEmpty) {
 
-              log("i a from ismoredata   $isMoredata");
-            }
+          if (searchfilterdata.length < 15 || searchfilterdata.isEmpty) {
+            isMoredata = false;
+            log("${searchfilterdata.length}");
 
-            // log("isMoredata  $isMoredata");
-            // log('Successfully get searchfilter Data');
+            log(" 1233445678");
 
             emit(SearchFilterState(
                 status: Status.loaded,
                 isloading: isMoredata,
                 position: true,
-                searchfilderdatalist: searchfilterdata));
+                searchfilderdatalist: searchfilterdata,
+                foundempty: true));
+
+            log("i a from ismoredata   $isMoredata");
+          } else {
+            emit(SearchFilterState(
+                status: Status.loaded,
+                isloading: isMoredata,
+                position: true,
+                searchfilderdatalist: searchfilterdata,
+                foundempty: false));
           }
           return searchfilterdata;
         }
@@ -84,7 +100,8 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
           status: Status.error,
           isloading: false,
           position: true,
-          searchfilderdatalist: []));
+          searchfilderdatalist: [],
+          foundempty: false));
     }
   }
 }

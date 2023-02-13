@@ -579,6 +579,7 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                                           height: MediaQuery.of(context)
                                               .size
                                               .height,
+                                          // make scrollable to bottom and make non scrollabel to top because make scrollable for SingleChildScrollView
                                           child: NotificationListener<
                                               UserScrollNotification>(
                                             onNotification: (notification) {

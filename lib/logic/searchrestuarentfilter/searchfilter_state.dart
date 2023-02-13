@@ -9,13 +9,15 @@ class SearchFilterState extends Equatable {
     required this.status,
     required this.position,
     required this.isloading,
+    required this.foundempty,
   });
   final List<SearchResturantFilterModel> searchfilderdatalist;
   final Status status;
   final bool position;
   final bool isloading;
+  final bool foundempty;
 
   @override
   List<Object?> get props =>
-      [status, position, searchfilderdatalist, isloading];
+      [status, position, searchfilderdatalist, isloading, foundempty];
 }

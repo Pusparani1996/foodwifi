@@ -4,6 +4,7 @@ import 'package:foodwifi/pages/homepage.dart';
 import 'package:foodwifi/pages/mixedproduct.dart';
 import 'package:foodwifi/pages/productupper.dart';
 import 'package:foodwifi/pages/search_page.dart';
+import 'package:foodwifi/pages/sortby_page.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -20,6 +21,9 @@ import 'package:foodwifi/pages/search_page.dart';
     ),
     AutoRoute(
       page: SearchPage,
+    ),
+    AutoRoute(
+      page: SortByPage,
     ),
   ],
 )

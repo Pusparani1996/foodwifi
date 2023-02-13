@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage>
 
   List animatedtextcopy = [
     "Momo",
-    " Chiken Chou",
+    " Chow",
     "Pizza",
     " Biriyani",
     "Burger",
@@ -189,6 +189,13 @@ class _HomePageState extends State<HomePage>
                                             builder: (context) =>
                                                 const SearchPage(
                                               textvalue: 'What are you craving',
+                                              cusines: '',
+                                              // showsearchrestuarent: true,
+                                              storetypes: '',
+                                              sortbyid: '', sortby: '',
+                                              showsortby: false,
+                                              fromsortshoerestuarent: false,
+                                              cuisinesid: '', storetypeid: '',
                                             ),
                                           ));
                                     },
@@ -215,6 +222,7 @@ class _HomePageState extends State<HomePage>
                                         border: InputBorder.none),
                                   )
                                 : TextFormField(
+                                    readOnly: true,
                                     onTap: () {
                                       var anidataindex =
                                           animatedtextcopy.indexOf(anitext);
@@ -224,21 +232,22 @@ class _HomePageState extends State<HomePage>
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => SearchPage(
-                                                  textvalue: animatedtextcopy[
-                                                      anidataindex == 0
-                                                          ? 0
-                                                          : anidataindex + 1
-                                                      //     ?
-                                                      //     : 0
-                                                      // <= 1 ||
-                                                      //         anidataindex > 5
-                                                      //     ? 0
-                                                      //     : anidataindex + 1
-                                                      ]),
+                                                textvalue: animatedtextcopy[
+                                                    anidataindex > 4
+                                                        ? 0
+                                                        : anidataindex + 1],
+                                                cusines: '',
+                                                //  showsearchrestuarent: true,
+                                                storetypes: '',
+                                                sortbyid: '', sortby: '',
+                                                showsortby: false,
+                                                fromsortshoerestuarent: false,
+                                                cuisinesid: '', storetypeid: '',
+                                              ),
                                             ));
                                       }
                                     },
-                                    readOnly: true,
+                                    // readOnly: true,
                                     decoration: InputDecoration(
                                         prefixIcon: Row(
                                           children: [
@@ -253,25 +262,6 @@ class _HomePageState extends State<HomePage>
                                               width: 5,
                                             ),
                                             AnimatedTextKit(
-                                              onTap: () {
-                                                // var anidataindex =
-                                                //     animatedtextcopy
-                                                //         .indexOf(anitext);
-                                                // Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //       builder: (context) => SearchPage(
-                                                //           textvalue:
-                                                //               animatedtextcopy[
-                                                //                   anidataindex
-                                                //                   >=
-                                                //                           1
-                                                //                       ? anidataindex -
-                                                //                           1
-                                                //                       : 0
-                                                //                       ]),
-                                                //     ));
-                                              },
                                               onNext: (p0, p1) {
                                                 setState(
                                                   () {
@@ -286,8 +276,7 @@ class _HomePageState extends State<HomePage>
                                               repeatForever: true,
                                               animatedTexts: [
                                                 TyperAnimatedText("Momo"),
-                                                TyperAnimatedText(
-                                                    " Chiken Chou"),
+                                                TyperAnimatedText(" Chow"),
                                                 TyperAnimatedText("Pizza"),
                                                 TyperAnimatedText(" Biriyani"),
                                                 TyperAnimatedText("Burger"),
@@ -401,49 +390,106 @@ class _HomePageState extends State<HomePage>
                                 return Padding(
                                   padding:
                                       const EdgeInsets.only(top: 35, left: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 77,
-                                        width: 82,
-                                        child: CachedNetworkImage(
-                                            fadeInDuration:
-                                                const Duration(seconds: 2),
-                                            imageUrl:
-                                                'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[1][index]!.img}',
-                                            fit: BoxFit.cover,
-                                            progressIndicatorBuilder: (context,
-                                                url, downloadProgress) {
-                                              return const Skeleton(
-                                                radius: 15,
-                                                height: 70,
-                                                width: 85,
-                                              );
-                                            },
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Center(
-                                                        child: Text(
-                                                      "bad network",
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 10),
-                                                    ))),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          "${firstitemlist[1][index]!.title}",
-                                          style: const TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold),
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (index == 3) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SearchRestuarentFilter(
+                                                      itemname: firstitemlist[1]
+                                                              [3]!
+                                                          .keyword
+                                                          .toString(),
+                                                      fromsearchonly: false,
+                                                      cusinesid: null,
+                                                      sortbyid: '',
+                                                      cusines: '',
+                                                      sortby: '',
+                                                      sorttypeid: '',
+                                                      storetypes: '',
+                                                    )));
+                                      } else if (index == 0) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const SearchRestuarentFilter(
+                                                      itemname: "",
+                                                      fromsearchonly: false,
+                                                      cusinesid: null,
+                                                      sortbyid: '',
+                                                      cusines: '',
+                                                      sortby: '',
+                                                      sorttypeid: '',
+                                                      storetypes: '',
+                                                    )));
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SearchRestuarentFilter(
+                                                      itemname: firstitemlist[1]
+                                                              [index]!
+                                                          .title
+                                                          .toString(),
+                                                      fromsearchonly: false,
+                                                      cusinesid: "Store types",
+                                                      sortbyid: '',
+                                                      cusines: '',
+                                                      sortby: '',
+                                                      sorttypeid: '',
+                                                      storetypes: '',
+                                                    )));
+                                      }
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 77,
+                                          width: 82,
+                                          child: CachedNetworkImage(
+                                              fadeInDuration:
+                                                  const Duration(seconds: 2),
+                                              imageUrl:
+                                                  'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[1][index]!.img}',
+                                              fit: BoxFit.cover,
+                                              progressIndicatorBuilder:
+                                                  (context, url,
+                                                      downloadProgress) {
+                                                return const Skeleton(
+                                                  radius: 15,
+                                                  height: 70,
+                                                  width: 85,
+                                                );
+                                              },
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Center(
+                                                          child: Text(
+                                                        "bad network",
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontSize: 10),
+                                                      ))),
                                         ),
-                                      )
-                                    ],
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            "${firstitemlist[1][index]!.title}",
+                                            style: const TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
@@ -783,6 +829,15 @@ class _HomePageState extends State<HomePage>
                                                                         [index]!
                                                                     .title
                                                                     .toString(),
+                                                                // only used for serach page navigate to searchrestuarentpage
+                                                                fromsearchonly:
+                                                                    false,
+                                                                cusinesid: null,
+                                                                sortbyid: '',
+                                                                cusines: '',
+                                                                sortby: '',
+                                                                sorttypeid: '',
+                                                                storetypes: '',
                                                               )));
                                                 },
                                                 child: SizedBox(

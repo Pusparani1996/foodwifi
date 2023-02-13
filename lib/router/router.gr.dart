@@ -11,30 +11,31 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i6;
+import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
 
-import '../model/joinmodel.dart' as _i7;
+import '../model/joinmodel.dart' as _i8;
 import '../pages/homepage.dart' as _i1;
 import '../pages/mixedproduct.dart' as _i3;
 import '../pages/productupper.dart' as _i2;
 import '../pages/search_page.dart' as _i4;
+import '../pages/sortby_page.dart' as _i5;
 
-class AppRouter extends _i5.RootStackRouter {
-  AppRouter([_i6.GlobalKey<_i6.NavigatorState>? navigatorKey])
+class AppRouter extends _i6.RootStackRouter {
+  AppRouter([_i7.GlobalKey<_i7.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i5.PageFactory> pagesMap = {
+  final Map<String, _i6.PageFactory> pagesMap = {
     HomeRoute.name: (routeData) {
-      return _i5.MaterialPageX<dynamic>(
+      return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.HomePage(),
       );
     },
     ProductUpperRoute.name: (routeData) {
       final args = routeData.argsAs<ProductUpperRouteArgs>();
-      return _i5.MaterialPageX<dynamic>(
+      return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i2.ProductUpperPage(
           key: args.key,
@@ -49,7 +50,7 @@ class AppRouter extends _i5.RootStackRouter {
     },
     MixedProductRoute.name: (routeData) {
       final args = routeData.argsAs<MixedProductRouteArgs>();
-      return _i5.MaterialPageX<dynamic>(
+      return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.MixedProductPage(
           key: args.key,
@@ -61,40 +62,65 @@ class AppRouter extends _i5.RootStackRouter {
     },
     SearchRoute.name: (routeData) {
       final args = routeData.argsAs<SearchRouteArgs>();
-      return _i5.MaterialPageX<dynamic>(
+      return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i4.SearchPage(
           key: args.key,
           textvalue: args.textvalue,
+          cusines: args.cusines,
+          storetypes: args.storetypes,
+          showsortby: args.showsortby,
+          sortbyid: args.sortbyid,
+          sortby: args.sortby,
+          fromsortshoerestuarent: args.fromsortshoerestuarent,
+          storetypeid: args.storetypeid,
+          cuisinesid: args.cuisinesid,
+        ),
+      );
+    },
+    SortByRoute.name: (routeData) {
+      final args = routeData.argsAs<SortByRouteArgs>();
+      return _i6.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i5.SortByPage(
+          key: args.key,
+          cusines: args.cusines,
+          storetypes: args.storetypes,
+          showsearchrestuarent: args.showsearchrestuarent,
+          abovetxt: args.abovetxt,
         ),
       );
     },
   };
 
   @override
-  List<_i5.RouteConfig> get routes => [
-        _i5.RouteConfig(
+  List<_i6.RouteConfig> get routes => [
+        _i6.RouteConfig(
           HomeRoute.name,
           path: '/',
         ),
-        _i5.RouteConfig(
+        _i6.RouteConfig(
           ProductUpperRoute.name,
           path: '/product-upper-page',
         ),
-        _i5.RouteConfig(
+        _i6.RouteConfig(
           MixedProductRoute.name,
           path: '/mixed-product-page',
         ),
-        _i5.RouteConfig(
+        _i6.RouteConfig(
           SearchRoute.name,
           path: '/search-page',
+        ),
+        _i6.RouteConfig(
+          SortByRoute.name,
+          path: '/sort-by-page',
         ),
       ];
 }
 
 /// generated route for
 /// [_i1.HomePage]
-class HomeRoute extends _i5.PageRouteInfo<void> {
+class HomeRoute extends _i6.PageRouteInfo<void> {
   const HomeRoute()
       : super(
           HomeRoute.name,
@@ -106,15 +132,15 @@ class HomeRoute extends _i5.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.ProductUpperPage]
-class ProductUpperRoute extends _i5.PageRouteInfo<ProductUpperRouteArgs> {
+class ProductUpperRoute extends _i6.PageRouteInfo<ProductUpperRouteArgs> {
   ProductUpperRoute({
-    _i6.Key? key,
+    _i7.Key? key,
     required String id,
     required String title,
     required bool autoscroll,
     required String searcgcategoryname,
     required int? finalindex,
-    required _i7.Product? products,
+    required _i8.Product? products,
   }) : super(
           ProductUpperRoute.name,
           path: '/product-upper-page',
@@ -143,7 +169,7 @@ class ProductUpperRouteArgs {
     required this.products,
   });
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
   final String id;
 
@@ -155,7 +181,7 @@ class ProductUpperRouteArgs {
 
   final int? finalindex;
 
-  final _i7.Product? products;
+  final _i8.Product? products;
 
   @override
   String toString() {
@@ -165,10 +191,10 @@ class ProductUpperRouteArgs {
 
 /// generated route for
 /// [_i3.MixedProductPage]
-class MixedProductRoute extends _i5.PageRouteInfo<MixedProductRouteArgs> {
+class MixedProductRoute extends _i6.PageRouteInfo<MixedProductRouteArgs> {
   MixedProductRoute({
-    _i6.Key? key,
-    required List<_i7.JoinReviewBellowModel>? finaljoinreviewanddelowlist,
+    _i7.Key? key,
+    required List<_i8.JoinReviewBellowModel>? finaljoinreviewanddelowlist,
     required int categoryindex,
     required String id,
   }) : super(
@@ -193,9 +219,9 @@ class MixedProductRouteArgs {
     required this.id,
   });
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
-  final List<_i7.JoinReviewBellowModel>? finaljoinreviewanddelowlist;
+  final List<_i8.JoinReviewBellowModel>? finaljoinreviewanddelowlist;
 
   final int categoryindex;
 
@@ -209,16 +235,32 @@ class MixedProductRouteArgs {
 
 /// generated route for
 /// [_i4.SearchPage]
-class SearchRoute extends _i5.PageRouteInfo<SearchRouteArgs> {
+class SearchRoute extends _i6.PageRouteInfo<SearchRouteArgs> {
   SearchRoute({
-    _i6.Key? key,
+    _i7.Key? key,
     required String textvalue,
+    required String cusines,
+    required String storetypes,
+    required bool showsortby,
+    required String sortbyid,
+    required String sortby,
+    required bool fromsortshoerestuarent,
+    required String storetypeid,
+    required String cuisinesid,
   }) : super(
           SearchRoute.name,
           path: '/search-page',
           args: SearchRouteArgs(
             key: key,
             textvalue: textvalue,
+            cusines: cusines,
+            storetypes: storetypes,
+            showsortby: showsortby,
+            sortbyid: sortbyid,
+            sortby: sortby,
+            fromsortshoerestuarent: fromsortshoerestuarent,
+            storetypeid: storetypeid,
+            cuisinesid: cuisinesid,
           ),
         );
 
@@ -229,14 +271,87 @@ class SearchRouteArgs {
   const SearchRouteArgs({
     this.key,
     required this.textvalue,
+    required this.cusines,
+    required this.storetypes,
+    required this.showsortby,
+    required this.sortbyid,
+    required this.sortby,
+    required this.fromsortshoerestuarent,
+    required this.storetypeid,
+    required this.cuisinesid,
   });
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
   final String textvalue;
 
+  final String cusines;
+
+  final String storetypes;
+
+  final bool showsortby;
+
+  final String sortbyid;
+
+  final String sortby;
+
+  final bool fromsortshoerestuarent;
+
+  final String storetypeid;
+
+  final String cuisinesid;
+
   @override
   String toString() {
-    return 'SearchRouteArgs{key: $key, textvalue: $textvalue}';
+    return 'SearchRouteArgs{key: $key, textvalue: $textvalue, cusines: $cusines, storetypes: $storetypes, showsortby: $showsortby, sortbyid: $sortbyid, sortby: $sortby, fromsortshoerestuarent: $fromsortshoerestuarent, storetypeid: $storetypeid, cuisinesid: $cuisinesid}';
+  }
+}
+
+/// generated route for
+/// [_i5.SortByPage]
+class SortByRoute extends _i6.PageRouteInfo<SortByRouteArgs> {
+  SortByRoute({
+    _i7.Key? key,
+    required String? cusines,
+    required String? storetypes,
+    required bool? showsearchrestuarent,
+    required String? abovetxt,
+  }) : super(
+          SortByRoute.name,
+          path: '/sort-by-page',
+          args: SortByRouteArgs(
+            key: key,
+            cusines: cusines,
+            storetypes: storetypes,
+            showsearchrestuarent: showsearchrestuarent,
+            abovetxt: abovetxt,
+          ),
+        );
+
+  static const String name = 'SortByRoute';
+}
+
+class SortByRouteArgs {
+  const SortByRouteArgs({
+    this.key,
+    required this.cusines,
+    required this.storetypes,
+    required this.showsearchrestuarent,
+    required this.abovetxt,
+  });
+
+  final _i7.Key? key;
+
+  final String? cusines;
+
+  final String? storetypes;
+
+  final bool? showsearchrestuarent;
+
+  final String? abovetxt;
+
+  @override
+  String toString() {
+    return 'SortByRouteArgs{key: $key, cusines: $cusines, storetypes: $storetypes, showsearchrestuarent: $showsearchrestuarent, abovetxt: $abovetxt}';
   }
 }

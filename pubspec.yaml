@@ -87,7 +87,8 @@ flutter:
     - assets/images/burger.jpg
     - assets/images/foodwifi.png
     - assets/images/non-veg.png
-    - assets/images/veg.jpg
+    - assets/images/veg.jpg 
+    - assets/images/empty.jpg  
     
   #   - images/a_dot_ham.jpeg
 
