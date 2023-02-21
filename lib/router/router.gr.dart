@@ -11,33 +11,49 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i6;
-import 'package:flutter/material.dart' as _i7;
+import 'package:auto_route/auto_route.dart' as _i7;
+import 'package:flutter/material.dart' as _i8;
 
-import '../model/joinmodel.dart' as _i8;
-import '../pages/homepage.dart' as _i1;
-import '../pages/mixedproduct.dart' as _i3;
-import '../pages/productupper.dart' as _i2;
-import '../pages/search_page.dart' as _i4;
-import '../pages/sortby_page.dart' as _i5;
+import '../model/joinmodel.dart' as _i9;
+import '../pages/homepage.dart' as _i2;
+import '../pages/mixedproduct.dart' as _i4;
+import '../pages/productupper.dart' as _i3;
+import '../pages/search_page.dart' as _i5;
+import '../pages/sortby_page.dart' as _i6;
+import '../pages/splashscreen.dart' as _i1;
 
-class AppRouter extends _i6.RootStackRouter {
-  AppRouter([_i7.GlobalKey<_i7.NavigatorState>? navigatorKey])
+class AppRouter extends _i7.RootStackRouter {
+  AppRouter([_i8.GlobalKey<_i8.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i6.PageFactory> pagesMap = {
-    HomeRoute.name: (routeData) {
-      return _i6.MaterialPageX<dynamic>(
+  final Map<String, _i7.PageFactory> pagesMap = {
+    Splashscreen.name: (routeData) {
+      return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i1.HomePage(),
+        child: const _i1.Splashscreen(),
+      );
+    },
+    HomeRoute.name: (routeData) {
+      final args = routeData.argsAs<HomeRouteArgs>();
+      return _i7.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i2.HomePage(
+          key: args.key,
+          cuisines: args.cuisines,
+          sortby: args.sortby,
+          storetype: args.storetype,
+          cuisinesid: args.cuisinesid,
+          sortbyid: args.sortbyid,
+          storetypeid: args.storetypeid,
+        ),
       );
     },
     ProductUpperRoute.name: (routeData) {
       final args = routeData.argsAs<ProductUpperRouteArgs>();
-      return _i6.MaterialPageX<dynamic>(
+      return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i2.ProductUpperPage(
+        child: _i3.ProductUpperPage(
           key: args.key,
           id: args.id,
           title: args.title,
@@ -50,9 +66,9 @@ class AppRouter extends _i6.RootStackRouter {
     },
     MixedProductRoute.name: (routeData) {
       final args = routeData.argsAs<MixedProductRouteArgs>();
-      return _i6.MaterialPageX<dynamic>(
+      return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.MixedProductPage(
+        child: _i4.MixedProductPage(
           key: args.key,
           finaljoinreviewanddelowlist: args.finaljoinreviewanddelowlist,
           categoryindex: args.categoryindex,
@@ -62,9 +78,9 @@ class AppRouter extends _i6.RootStackRouter {
     },
     SearchRoute.name: (routeData) {
       final args = routeData.argsAs<SearchRouteArgs>();
-      return _i6.MaterialPageX<dynamic>(
+      return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.SearchPage(
+        child: _i5.SearchPage(
           key: args.key,
           textvalue: args.textvalue,
           cusines: args.cusines,
@@ -75,43 +91,64 @@ class AppRouter extends _i6.RootStackRouter {
           fromsortshoerestuarent: args.fromsortshoerestuarent,
           storetypeid: args.storetypeid,
           cuisinesid: args.cuisinesid,
+          resetdata: args.resetdata,
+          checkcuisinesname: args.checkcuisinesname,
+          addcheckcuisinesdata: args.addcheckcuisinesdata,
+          freedelivery: args.freedelivery,
+          freedeliveryid: args.freedeliveryid,
+          halal: args.halal,
+          promoid: args.promoid,
+          promocolor: args.promocolor,
+          freedeliverycolor: args.freedeliverycolor,
+          halalcolor: args.halalcolor,
         ),
       );
     },
     SortByRoute.name: (routeData) {
       final args = routeData.argsAs<SortByRouteArgs>();
-      return _i6.MaterialPageX<dynamic>(
+      return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i5.SortByPage(
+        child: _i6.SortByPage(
           key: args.key,
           cusines: args.cusines,
           storetypes: args.storetypes,
           showsearchrestuarent: args.showsearchrestuarent,
           abovetxt: args.abovetxt,
+          showresetbtn: args.showresetbtn,
+          freedelivery: args.freedelivery,
+          showbelowhomesearch: args.showbelowhomesearch,
+          halal: args.halal,
+          promo: args.promo,
+          cuisinesid: args.cuisinesid,
+          storetypeid: args.storetypeid,
         ),
       );
     },
   };
 
   @override
-  List<_i6.RouteConfig> get routes => [
-        _i6.RouteConfig(
-          HomeRoute.name,
+  List<_i7.RouteConfig> get routes => [
+        _i7.RouteConfig(
+          Splashscreen.name,
           path: '/',
         ),
-        _i6.RouteConfig(
+        _i7.RouteConfig(
+          HomeRoute.name,
+          path: '/home-page',
+        ),
+        _i7.RouteConfig(
           ProductUpperRoute.name,
           path: '/product-upper-page',
         ),
-        _i6.RouteConfig(
+        _i7.RouteConfig(
           MixedProductRoute.name,
           path: '/mixed-product-page',
         ),
-        _i6.RouteConfig(
+        _i7.RouteConfig(
           SearchRoute.name,
           path: '/search-page',
         ),
-        _i6.RouteConfig(
+        _i7.RouteConfig(
           SortByRoute.name,
           path: '/sort-by-page',
         ),
@@ -119,28 +156,87 @@ class AppRouter extends _i6.RootStackRouter {
 }
 
 /// generated route for
-/// [_i1.HomePage]
-class HomeRoute extends _i6.PageRouteInfo<void> {
-  const HomeRoute()
+/// [_i1.Splashscreen]
+class Splashscreen extends _i7.PageRouteInfo<void> {
+  const Splashscreen()
       : super(
-          HomeRoute.name,
+          Splashscreen.name,
           path: '/',
+        );
+
+  static const String name = 'Splashscreen';
+}
+
+/// generated route for
+/// [_i2.HomePage]
+class HomeRoute extends _i7.PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({
+    _i8.Key? key,
+    required String cuisines,
+    required String sortby,
+    required String storetype,
+    required String cuisinesid,
+    required String sortbyid,
+    required String storetypeid,
+  }) : super(
+          HomeRoute.name,
+          path: '/home-page',
+          args: HomeRouteArgs(
+            key: key,
+            cuisines: cuisines,
+            sortby: sortby,
+            storetype: storetype,
+            cuisinesid: cuisinesid,
+            sortbyid: sortbyid,
+            storetypeid: storetypeid,
+          ),
         );
 
   static const String name = 'HomeRoute';
 }
 
+class HomeRouteArgs {
+  const HomeRouteArgs({
+    this.key,
+    required this.cuisines,
+    required this.sortby,
+    required this.storetype,
+    required this.cuisinesid,
+    required this.sortbyid,
+    required this.storetypeid,
+  });
+
+  final _i8.Key? key;
+
+  final String cuisines;
+
+  final String sortby;
+
+  final String storetype;
+
+  final String cuisinesid;
+
+  final String sortbyid;
+
+  final String storetypeid;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{key: $key, cuisines: $cuisines, sortby: $sortby, storetype: $storetype, cuisinesid: $cuisinesid, sortbyid: $sortbyid, storetypeid: $storetypeid}';
+  }
+}
+
 /// generated route for
-/// [_i2.ProductUpperPage]
-class ProductUpperRoute extends _i6.PageRouteInfo<ProductUpperRouteArgs> {
+/// [_i3.ProductUpperPage]
+class ProductUpperRoute extends _i7.PageRouteInfo<ProductUpperRouteArgs> {
   ProductUpperRoute({
-    _i7.Key? key,
+    _i8.Key? key,
     required String id,
     required String title,
     required bool autoscroll,
     required String searcgcategoryname,
     required int? finalindex,
-    required _i8.Product? products,
+    required _i9.Product? products,
   }) : super(
           ProductUpperRoute.name,
           path: '/product-upper-page',
@@ -169,7 +265,7 @@ class ProductUpperRouteArgs {
     required this.products,
   });
 
-  final _i7.Key? key;
+  final _i8.Key? key;
 
   final String id;
 
@@ -181,7 +277,7 @@ class ProductUpperRouteArgs {
 
   final int? finalindex;
 
-  final _i8.Product? products;
+  final _i9.Product? products;
 
   @override
   String toString() {
@@ -190,11 +286,11 @@ class ProductUpperRouteArgs {
 }
 
 /// generated route for
-/// [_i3.MixedProductPage]
-class MixedProductRoute extends _i6.PageRouteInfo<MixedProductRouteArgs> {
+/// [_i4.MixedProductPage]
+class MixedProductRoute extends _i7.PageRouteInfo<MixedProductRouteArgs> {
   MixedProductRoute({
-    _i7.Key? key,
-    required List<_i8.JoinReviewBellowModel>? finaljoinreviewanddelowlist,
+    _i8.Key? key,
+    required List<_i9.JoinReviewBellowModel>? finaljoinreviewanddelowlist,
     required int categoryindex,
     required String id,
   }) : super(
@@ -219,9 +315,9 @@ class MixedProductRouteArgs {
     required this.id,
   });
 
-  final _i7.Key? key;
+  final _i8.Key? key;
 
-  final List<_i8.JoinReviewBellowModel>? finaljoinreviewanddelowlist;
+  final List<_i9.JoinReviewBellowModel>? finaljoinreviewanddelowlist;
 
   final int categoryindex;
 
@@ -234,10 +330,10 @@ class MixedProductRouteArgs {
 }
 
 /// generated route for
-/// [_i4.SearchPage]
-class SearchRoute extends _i6.PageRouteInfo<SearchRouteArgs> {
+/// [_i5.SearchPage]
+class SearchRoute extends _i7.PageRouteInfo<SearchRouteArgs> {
   SearchRoute({
-    _i7.Key? key,
+    _i8.Key? key,
     required String textvalue,
     required String cusines,
     required String storetypes,
@@ -247,6 +343,16 @@ class SearchRoute extends _i6.PageRouteInfo<SearchRouteArgs> {
     required bool fromsortshoerestuarent,
     required String storetypeid,
     required String cuisinesid,
+    required bool resetdata,
+    required String checkcuisinesname,
+    required bool addcheckcuisinesdata,
+    required String freedelivery,
+    required String freedeliveryid,
+    required String halal,
+    required String promoid,
+    required bool promocolor,
+    required bool freedeliverycolor,
+    required bool halalcolor,
   }) : super(
           SearchRoute.name,
           path: '/search-page',
@@ -261,6 +367,16 @@ class SearchRoute extends _i6.PageRouteInfo<SearchRouteArgs> {
             fromsortshoerestuarent: fromsortshoerestuarent,
             storetypeid: storetypeid,
             cuisinesid: cuisinesid,
+            resetdata: resetdata,
+            checkcuisinesname: checkcuisinesname,
+            addcheckcuisinesdata: addcheckcuisinesdata,
+            freedelivery: freedelivery,
+            freedeliveryid: freedeliveryid,
+            halal: halal,
+            promoid: promoid,
+            promocolor: promocolor,
+            freedeliverycolor: freedeliverycolor,
+            halalcolor: halalcolor,
           ),
         );
 
@@ -279,9 +395,19 @@ class SearchRouteArgs {
     required this.fromsortshoerestuarent,
     required this.storetypeid,
     required this.cuisinesid,
+    required this.resetdata,
+    required this.checkcuisinesname,
+    required this.addcheckcuisinesdata,
+    required this.freedelivery,
+    required this.freedeliveryid,
+    required this.halal,
+    required this.promoid,
+    required this.promocolor,
+    required this.freedeliverycolor,
+    required this.halalcolor,
   });
 
-  final _i7.Key? key;
+  final _i8.Key? key;
 
   final String textvalue;
 
@@ -301,21 +427,48 @@ class SearchRouteArgs {
 
   final String cuisinesid;
 
+  final bool resetdata;
+
+  final String checkcuisinesname;
+
+  final bool addcheckcuisinesdata;
+
+  final String freedelivery;
+
+  final String freedeliveryid;
+
+  final String halal;
+
+  final String promoid;
+
+  final bool promocolor;
+
+  final bool freedeliverycolor;
+
+  final bool halalcolor;
+
   @override
   String toString() {
-    return 'SearchRouteArgs{key: $key, textvalue: $textvalue, cusines: $cusines, storetypes: $storetypes, showsortby: $showsortby, sortbyid: $sortbyid, sortby: $sortby, fromsortshoerestuarent: $fromsortshoerestuarent, storetypeid: $storetypeid, cuisinesid: $cuisinesid}';
+    return 'SearchRouteArgs{key: $key, textvalue: $textvalue, cusines: $cusines, storetypes: $storetypes, showsortby: $showsortby, sortbyid: $sortbyid, sortby: $sortby, fromsortshoerestuarent: $fromsortshoerestuarent, storetypeid: $storetypeid, cuisinesid: $cuisinesid, resetdata: $resetdata, checkcuisinesname: $checkcuisinesname, addcheckcuisinesdata: $addcheckcuisinesdata, freedelivery: $freedelivery, freedeliveryid: $freedeliveryid, halal: $halal, promoid: $promoid, promocolor: $promocolor, freedeliverycolor: $freedeliverycolor, halalcolor: $halalcolor}';
   }
 }
 
 /// generated route for
-/// [_i5.SortByPage]
-class SortByRoute extends _i6.PageRouteInfo<SortByRouteArgs> {
+/// [_i6.SortByPage]
+class SortByRoute extends _i7.PageRouteInfo<SortByRouteArgs> {
   SortByRoute({
-    _i7.Key? key,
+    _i8.Key? key,
     required String? cusines,
     required String? storetypes,
     required bool? showsearchrestuarent,
     required String? abovetxt,
+    required bool? showresetbtn,
+    required String freedelivery,
+    bool? showbelowhomesearch,
+    required String halal,
+    required String promo,
+    required String cuisinesid,
+    required String storetypeid,
   }) : super(
           SortByRoute.name,
           path: '/sort-by-page',
@@ -325,6 +478,13 @@ class SortByRoute extends _i6.PageRouteInfo<SortByRouteArgs> {
             storetypes: storetypes,
             showsearchrestuarent: showsearchrestuarent,
             abovetxt: abovetxt,
+            showresetbtn: showresetbtn,
+            freedelivery: freedelivery,
+            showbelowhomesearch: showbelowhomesearch,
+            halal: halal,
+            promo: promo,
+            cuisinesid: cuisinesid,
+            storetypeid: storetypeid,
           ),
         );
 
@@ -338,9 +498,16 @@ class SortByRouteArgs {
     required this.storetypes,
     required this.showsearchrestuarent,
     required this.abovetxt,
+    required this.showresetbtn,
+    required this.freedelivery,
+    this.showbelowhomesearch,
+    required this.halal,
+    required this.promo,
+    required this.cuisinesid,
+    required this.storetypeid,
   });
 
-  final _i7.Key? key;
+  final _i8.Key? key;
 
   final String? cusines;
 
@@ -350,8 +517,22 @@ class SortByRouteArgs {
 
   final String? abovetxt;
 
+  final bool? showresetbtn;
+
+  final String freedelivery;
+
+  final bool? showbelowhomesearch;
+
+  final String halal;
+
+  final String promo;
+
+  final String cuisinesid;
+
+  final String storetypeid;
+
   @override
   String toString() {
-    return 'SortByRouteArgs{key: $key, cusines: $cusines, storetypes: $storetypes, showsearchrestuarent: $showsearchrestuarent, abovetxt: $abovetxt}';
+    return 'SortByRouteArgs{key: $key, cusines: $cusines, storetypes: $storetypes, showsearchrestuarent: $showsearchrestuarent, abovetxt: $abovetxt, showresetbtn: $showresetbtn, freedelivery: $freedelivery, showbelowhomesearch: $showbelowhomesearch, halal: $halal, promo: $promo, cuisinesid: $cuisinesid, storetypeid: $storetypeid}';
   }
 }

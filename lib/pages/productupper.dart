@@ -695,6 +695,7 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                                 GestureDetector(
                                     onTap: () {
                                       showFlexibleBottomSheet(
+                                          bottomSheetColor: Colors.transparent,
                                           isModal: true,
                                           isDismissible: true,
                                           duration:

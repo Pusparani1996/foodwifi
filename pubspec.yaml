@@ -56,19 +56,33 @@ dependencies:
   bottom_sheet: ^3.1.2
   scrollable_positioned_list: ^0.3.5
 
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/foodwifi.png"
+  min_sdk_android: 21
+  
 dev_dependencies:
+  flutter_lints: ^2.0.0
+
+  chopper_generator: ^6.0.0
+  auto_route_generator: ^5.0.3
+ 
+  build_runner: ^2.3.3
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.11.0
+
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-  build_runner: ^2.3.3
-  chopper_generator: ^6.0.0
-  auto_route_generator: ^5.0.3
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -88,7 +102,11 @@ flutter:
     - assets/images/foodwifi.png
     - assets/images/non-veg.png
     - assets/images/veg.jpg 
-    - assets/images/empty.jpg  
+    - assets/images/empty.jpg
+    - assets/images/valentine.gif
+    - assets/images/splash.gif
+    - assets/images/equilizer.gif
+
     
   #   - images/a_dot_ham.jpeg
 

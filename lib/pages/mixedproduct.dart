@@ -170,19 +170,28 @@ class _MixedProductPageState extends State<MixedProductPage> {
                                             width: 14,
                                           ),
                                           SizedBox(
+                                            width: 220,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(widget
-                                                    .finaljoinreviewanddelowlist![
-                                                        widget.categoryindex]
-                                                    .products[productindex]
-                                                    .name
-                                                    .toString()),
+                                                Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    widget
+                                                        .finaljoinreviewanddelowlist![
+                                                            widget
+                                                                .categoryindex]
+                                                        .products[productindex]
+                                                        .name
+                                                        .toString(),
+                                                    maxLines: 3),
                                                 SizedBox(
                                                   width: 200,
                                                   child: Text(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 3,
                                                     widget
                                                         .finaljoinreviewanddelowlist![
                                                             widget
@@ -237,6 +246,9 @@ class _MixedProductPageState extends State<MixedProductPage> {
                                                         child: Row(
                                                           children: [
                                                             Text(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               maxLines: 3,
                                                               widget
                                                                           .finaljoinreviewanddelowlist![widget
@@ -271,7 +283,7 @@ class _MixedProductPageState extends State<MixedProductPage> {
                                                                     .offer
                                                                     .description!
                                                                     .isEmpty
-                                                                ? SizedBox()
+                                                                ? const SizedBox()
                                                                 : Container(
                                                                     decoration:
                                                                         BoxDecoration(

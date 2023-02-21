@@ -169,12 +169,17 @@ class VegProductPage extends StatelessWidget {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Text(belowdatalistveg![
-                                                                      index]
-                                                                  .products[
-                                                                      productindex]
-                                                                  .name
-                                                                  .toString()),
+                                                              SizedBox(
+                                                                width: 200,
+                                                                child: Text(
+                                                                    maxLines: 2,
+                                                                    belowdatalistveg![
+                                                                            index]
+                                                                        .products[
+                                                                            productindex]
+                                                                        .name
+                                                                        .toString()),
+                                                              ),
                                                               SizedBox(
                                                                 width: 200,
                                                                 child: Text(

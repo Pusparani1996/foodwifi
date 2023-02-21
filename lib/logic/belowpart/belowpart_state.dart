@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:foodwifi/model/joinmodel.dart';
 
-import '../../model/bellowanothermodel.dart';
-
 enum Status { initial, loading, loaded, error }
 
 class BellowPartState extends Equatable {

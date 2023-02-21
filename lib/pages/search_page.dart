@@ -21,6 +21,19 @@ class SearchPage extends StatefulWidget {
   final String storetypeid;
   final String cuisinesid;
   final bool fromsortshoerestuarent;
+  final bool resetdata;
+  // FOR CHECK BOX
+  final String checkcuisinesname;
+  final bool addcheckcuisinesdata;
+
+  final String freedelivery;
+  final String freedeliveryid;
+  final String halal;
+  final String promoid;
+  final bool promocolor;
+  final bool freedeliverycolor;
+  final bool halalcolor;
+// final List<dynamic> radiostoretypeidlist;
 
   const SearchPage({
     super.key,
@@ -33,6 +46,17 @@ class SearchPage extends StatefulWidget {
     required this.fromsortshoerestuarent,
     required this.storetypeid,
     required this.cuisinesid,
+    required this.resetdata,
+    required this.checkcuisinesname,
+    required this.addcheckcuisinesdata,
+    required this.freedelivery,
+    required this.freedeliveryid,
+    required this.halal,
+    required this.promoid,
+    required this.promocolor,
+    required this.freedeliverycolor,
+    required this.halalcolor,
+    //required this.radiostoretypeidlist,
   });
 
   @override
@@ -51,11 +75,21 @@ class _SearchPageState extends State<SearchPage> {
 
   String sorttypeid = "";
   String sortbyid = "";
+  String freedeliveryid = "";
   // for green light on searcg restuarent page
-
-  String cusinescolor1 = "";
-  String cusinescolor2 = "";
-  String cusinescolor3 = "";
+// FOR TABBAR
+  String cusinescolor1 = ""; //for sortby name
+  String cusinescolor2 = ""; // for storetype name
+  String cusinescolor3 = ""; // for cuisines name
+  String freedelivery = "";
+  String halal = "";
+  String promo = "";
+  bool showresetbtn = false;
+  String checkcuisinesname = "";
+  bool autofocus = false;
+  bool promocolor1 = false;
+  bool freedeliverycolor1 = false;
+  bool halalcolor1 = false;
 
   @override
   void initState() {
@@ -64,6 +98,8 @@ class _SearchPageState extends State<SearchPage> {
     controller.text = widget.textvalue;
     context.read<SearcgCubit>().getsearch();
     if (widget.showsortby == true) {
+      log("FREE ID :${widget.freedeliveryid}");
+
       setState(() {
         controller.text = widget.textvalue;
         cusinid = widget.cuisinesid;
@@ -73,10 +109,36 @@ class _SearchPageState extends State<SearchPage> {
         cusinescolor2 = widget.storetypes;
         cusinescolor3 = widget.cusines;
         showsearchrestuarent = widget.fromsortshoerestuarent;
+        checkcuisinesname = widget.checkcuisinesname;
+        freedeliveryid = widget.freedeliveryid;
+        freedelivery = widget.freedelivery;
+        halalcolor1 = widget.halalcolor;
+        freedeliverycolor1 = widget.freedeliverycolor;
+        promocolor1 = widget.promocolor;
       });
-      log("Cusinescolor : ${cusinescolor3}");
-      log("sortbycolor : ${cusinescolor1}");
-      log("storecolor : ${cusinescolor2}");
+
+      // log("setState");
+      // log("HALALCOLOR 1 :$halalcolor1");
+      log("FREEDELIVERYCOLOR 1 from setstate :$freedeliverycolor1");
+      log("halal 1 from setstate :$halalcolor1");
+      // log("PROMO COLOR 1 :  :$promocolor1");
+      // log("Cusinescolor : $cusinescolor3");
+      // log("sortbycolor : $cusinescolor1");
+      // log("storecolor : $cusinescolor2");
+      // log(showsearchrestuarent.toString());
+      // log("Search page CHECHCUISINESNAME : ${widget.checkcuisinesname}");
+      // log(widget.freedeliveryid);
+    }
+    if (widget.resetdata == true) {
+      controller.text = widget.textvalue;
+      cusinid = widget.cuisinesid;
+      sorttypeid = widget.storetypeid;
+      sortbyid = widget.sortbyid;
+      cusinescolor1 = "";
+      cusinescolor2 = "";
+      cusinescolor3 = "";
+      showsearchrestuarent = widget.fromsortshoerestuarent;
+      visible = false;
     }
   }
 
@@ -104,15 +166,20 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          // log("from searcg navigate${widget.showsortby}");
                           if (widget.showsortby != true) {
-                            //  log("from searcg navigate inside : ${widget.showsortby}");
                             Navigator.pop(context);
                           } else {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const HomePage(),
+                                  builder: (context) => HomePage(
+                                    cuisines: widget.cusines,
+                                    sortby: widget.sortby,
+                                    storetype: widget.storetypes,
+                                    cuisinesid: '',
+                                    sortbyid: '',
+                                    storetypeid: '',
+                                  ),
                                 ));
                           }
                         },
@@ -136,6 +203,8 @@ class _SearchPageState extends State<SearchPage> {
                                 onTap: () {
                                   setState(() {
                                     searching = searching2;
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                   });
                                 },
                                 onChanged: (value) {
@@ -163,14 +232,12 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             InkWell(
                               onTap: () {
-                                // controller.clear();
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                                 setState(() {
                                   controller.text = "";
                                   // showsearchrestuarent = true;
                                 });
-                                // log("From Inkwell :$showsearchrestuarent");
                               },
                               child: const Icon(
                                 Icons.close,
@@ -197,8 +264,15 @@ class _SearchPageState extends State<SearchPage> {
                       cusines: cusinescolor3,
                       sortby: cusinescolor1,
                       storetypes: cusinescolor2,
-                      // sortby: ,
-                      // sortby: sorttypeid,
+                      showresetbtn: showresetbtn,
+                      checkcuisinesid: checkcuisinesname,
+                      addcheckcuisinesdata: widget.addcheckcuisinesdata,
+                      freedelery_id: widget.freedeliveryid,
+                      halal_id: widget.halal,
+                      promo_id: widget.promoid,
+                      freedeliverycolor: freedeliverycolor1,
+                      halalcolor: halalcolor1,
+                      promocolor: promocolor1,
                     ))
                 : Expanded(
                     flex: 9,
@@ -213,6 +287,15 @@ class _SearchPageState extends State<SearchPage> {
                           cusines: cusinescolor3,
                           sortby: cusinescolor1,
                           storetypes: cusinescolor2,
+                          showresetbtn: showresetbtn,
+                          checkcuisinesid: checkcuisinesname,
+                          addcheckcuisinesdata: widget.addcheckcuisinesdata,
+                          freedelery_id: widget.freedeliveryid,
+                          halal_id: widget.halal,
+                          promo_id: widget.promoid,
+                          freedeliverycolor: freedeliverycolor1,
+                          halalcolor: halalcolor1,
+                          promocolor: promocolor1,
                         ),
                         child: searchreplacebelow(context, searchdata)),
                   )
@@ -324,6 +407,8 @@ class _SearchPageState extends State<SearchPage> {
                                   padding: const EdgeInsets.only(top: 20),
                                   child: InkWell(
                                     onTap: () {
+                                      showresetbtn = true;
+
                                       cusinescolor3 = "Cuisines";
                                       setState(() {
                                         showsearchrestuarent = true;
@@ -354,6 +439,7 @@ class _SearchPageState extends State<SearchPage> {
                                   onTap: () {
                                     cusinescolor2 = "Store types";
                                     setState(() {
+                                      showresetbtn = true;
                                       showsearchrestuarent = true;
                                       sorttypeid = searchdata
                                           .storeTypes[index].id
@@ -381,7 +467,3 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 } // END OF CODE FOR THIS PAGE
-
-
-
-

@@ -28,6 +28,13 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
     required String? cusinid,
     required String? sorttypeid,
     required String? sortbyid,
+    required String? checkcuisinesid,
+    required bool addcheckcuisinesdata,
+    required String? freedeliveryid,
+    required String? halalid,
+    required String? promoid,
+    // required bool checkshow,
+    // required String allcuisines
   }) async {
     emit(const SearchFilterState(
         status: Status.loading,
@@ -35,8 +42,11 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
         position: true,
         searchfilderdatalist: [],
         foundempty: false));
-    log("From saerch");
-    log(itemname);
+    //  log("From saerch");
+    // log(itemname);
+    log("ALL CUISINES ID : $checkcuisinesid");
+    log("ALL Freedelivery ID : $freedeliveryid");
+    log("ALL sortby ID : $sortbyid");
 
     try {
       final queryParameters = {
@@ -45,14 +55,14 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
         "page": page.toString(),
         "_search": itemname,
         "sort_by": sortbyid,
-        "cuisines": cusinid,
+        "cuisines": addcheckcuisinesdata == true ? checkcuisinesid : cusinid,
         "store_type_id": sorttypeid,
-        "halal": "",
-        "free_delivery": "",
-        "promo": ""
+        "halal": halalid,
+        "free_delivery": freedeliveryid,
+        "promo": promoid
       };
 
-      log("Page no.$page");
+      // log("Page no.$page");
       if (isMoredata) {
         final baseHeader = {'Branchid': "1"};
         final response = await http.get(
@@ -64,15 +74,15 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
           var searchfilterdata =
               searchResturantFilterModelFromJson(response.body);
 
-          log("Search data lenght  ${searchfilterdata.length}");
+          //  log("Search data lenght  ${searchfilterdata.length}");
 
           //  if (searchfilterdata.isNotEmpty) {
 
           if (searchfilterdata.length < 15 || searchfilterdata.isEmpty) {
             isMoredata = false;
-            log("${searchfilterdata.length}");
+            // log("${searchfilterdata.length}");
 
-            log(" 1233445678");
+            // log(" 1233445678");
 
             emit(SearchFilterState(
                 status: Status.loaded,
@@ -81,7 +91,7 @@ class SearchFilterCubit extends Cubit<SearchFilterState> {
                 searchfilderdatalist: searchfilterdata,
                 foundempty: true));
 
-            log("i a from ismoredata   $isMoredata");
+            //  log("i a from ismoredata   $isMoredata");
           } else {
             emit(SearchFilterState(
                 status: Status.loaded,
