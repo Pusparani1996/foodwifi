@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:foodwifi/model/foodwifimodel.dart';
-import 'package:foodwifi/pages/searchrestuarentfilter_page.dart';
 import 'package:foodwifi/router/router.gr.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 

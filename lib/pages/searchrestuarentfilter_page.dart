@@ -85,7 +85,9 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
   bool tabcolor = false;
   List<Cuisine> searchdata = [];
   List<StoreType> radiostoretype = [];
+  List<SortOption> radiosortOptions = [];
   List radiostoretypelist = [];
+  List radiostoreoptionlist = [];
   List cuisinesidkey = [];
   List cuisinesitems = [];
   Map checkcuisinesidandname = {};
@@ -226,6 +228,7 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
     if (searcgstatus.searchdata != null) {
       searchdata = searcgstatus.searchdata!.cuisines;
       radiostoretype = searcgstatus.searchdata!.storeTypes;
+      radiosortOptions = searcgstatus.searchdata!.sortOptions;
       for (var element in searchdata) {
         if (cuisinesitems.contains(element)) {
           log("ítems already contain");
@@ -294,6 +297,15 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                               return InkWell(
                                 onTap: () {
                                   if (index == 0) {
+                                    for (var element in radiostoretype) {
+                                      radiostoretypelist.add(element.id);
+                                      log("id :${element.id}");
+                                    }
+
+                                    for (var element in radiostoreoptionlist) {
+                                      radiostoreoptionlist.add(element.id);
+                                      log("id :" + element.id);
+                                    }
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -308,12 +320,16 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                             halal: "",
                                             promo: '',
                                             storetypeid: widget.sorttypeid!,
+                                            sortbyname: widget.sortby!,
+                                            radiosortbyidlist:
+                                                radiostoreoptionlist,
+                                            sortbyid: widget.sortbyid!,
                                           ),
                                         ));
                                   } else if (index == 1) {
                                     for (var element in radiostoretype) {
                                       radiostoretypelist.add(element.id);
-                                      log("id :" + element.id);
+                                      log("id :${element.id}");
                                     }
                                     Navigator.push(
                                         context,
@@ -736,6 +752,10 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                   return InkWell(
                                     onTap: () {
                                       if (index == 0) {
+                                        for (var element in radiosortOptions) {
+                                          radiostoreoptionlist.add(element.id);
+                                          log("id :${element.id}");
+                                        }
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -751,12 +771,16 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                                 halal: "",
                                                 promo: '',
                                                 storetypeid: widget.sorttypeid!,
+                                                sortbyname: widget.sortby!,
+                                                radiosortbyidlist:
+                                                    radiostoreoptionlist,
+                                                sortbyid: widget.sortbyid!,
                                               ),
                                             ));
                                       } else if (index == 1) {
                                         for (var element in radiostoretype) {
                                           radiostoretypelist.add(element.id);
-                                          log("id :" + element.id);
+                                          log("id :${element.id}");
                                         }
                                         Navigator.push(
                                             context,

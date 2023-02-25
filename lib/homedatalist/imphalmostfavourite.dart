@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:foodwifi/model/foodwifimodel.dart';
-import 'package:foodwifi/pages/searchrestuarentfilter_page.dart';
 import 'package:foodwifi/router/router.gr.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 
@@ -19,7 +18,7 @@ class ImpahlMostFavouriteTastyTasteList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 7),
       child: Container(
         color: Colors.white,
-        height: 320,
+        height: 500,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,63 +39,74 @@ class ImpahlMostFavouriteTastyTasteList extends StatelessWidget {
                     ),
             ),
             Expanded(
-              child: Container(
-                child: firstitemlist.isEmpty
-                    ? const Center(
-                        child: SizedBox(
-                            height: 15,
-                            width: 15,
-                            child: CircularProgressIndicator()))
-                    : GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2, childAspectRatio: 1 / 0.65),
-                        physics: const PageScrollPhysics()
-                            .applyTo(const BouncingScrollPhysics()),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: firstitemlist[2].length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              top: 20,
-                              left: 10,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SearchRestuarentFilter(
-                                                  itemname: firstitemlist[2]
-                                                          [index]!
-                                                      .title
-                                                      .toString(),
-                                                  // only used for serach page navigate to searchrestuarentpage
-                                                  fromsearchonly: false,
-                                                  cusinesid: null,
-                                                  sortbyid: '',
-                                                  cusines: '',
-                                                  sortby: '',
-                                                  sorttypeid: '',
-                                                  storetypes: '',
-                                                  showresetbtn: false,
-                                                  checkcuisinesid: '',
-                                                  addcheckcuisinesdata: false,
-                                                  freedelery_id: '',
-                                                  halal_id: '',
-                                                  promo_id: '',
-                                                  freedeliverycolor: false,
-                                                  halalcolor: false,
-                                                  promocolor: false,
-                                                )));
-                                  },
-                                  child: SizedBox(
-                                    height: 85,
-                                    width: 80,
+              child: firstitemlist.isEmpty
+                  ? const Center(
+                      child: SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator()))
+                  : GridView.builder(
+                      controller: PageController(viewportFraction: 0.4),
+                      scrollDirection: Axis.horizontal,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 2 / 1.2),
+                      physics: const PageScrollPhysics()
+                          .applyTo(const BouncingScrollPhysics()),
+                      itemCount: firstitemlist[2].length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20,
+                            left: 10,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  context.router.push(ProductUpperRoute(
+                                    id: firstitemlist[2][index]!.id.toString(),
+                                    title: firstitemlist[2][index]!
+                                        .title
+                                        .toString(),
+
+                                    // the below parameter are  not used for this navigate ..it used for searchrestuarant page
+                                    autoscroll: false,
+                                    searcgcategoryname: '',
+                                    finalindex: 0,
+                                    products: null,
+
+                                    // SearchRestuarentFilter(
+                                    //   itemname: firstitemlist[2]
+                                    //           [index]!
+                                    //       .title
+                                    //       .toString(),
+                                    //   // only used for serach page navigate to searchrestuarentpage
+                                    //   fromsearchonly: false,
+                                    //   cusinesid: null,
+                                    //   sortbyid: '',
+                                    //   cusines: '',
+                                    //   sortby: '',
+                                    //   sorttypeid: '',
+                                    //   storetypes: '',
+                                    //   showresetbtn: false,
+                                    //   checkcuisinesid: '',
+                                    //   addcheckcuisinesdata: false,
+                                    //   freedelery_id: '',
+                                    //   halal_id: '',
+                                    //   promo_id: '',
+                                    //   freedeliverycolor: false,
+                                    //   halalcolor: false,
+                                    //   promocolor: false,
+                                    // )
+                                  ));
+                                },
+                                child: SizedBox(
+                                  height: 140,
+                                  width: 130,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
                                     child: CachedNetworkImage(
                                         fadeInDuration:
                                             const Duration(seconds: 2),
@@ -121,20 +131,67 @@ class ImpahlMostFavouriteTastyTasteList extends StatelessWidget {
                                             ))),
                                   ),
                                 ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "${firstitemlist[2][index]!.title}",
-                                    style: const TextStyle(
-                                        color: Colors.black54, fontSize: 10),
-                                  ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "${firstitemlist[2][index]!.title}",
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-              ),
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: const [
+                                    Icon(
+                                      Icons.favorite_border,
+                                      size: 17,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    size: 13,
+                                    color: Color.fromARGB(255, 226, 209, 53),
+                                  ),
+                                  Text(
+                                    "${firstitemlist[2][index]!.rating}",
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                  const SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    "${firstitemlist[2][index]!.time}",
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                  const SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    "${firstitemlist[2][index]!.distance}",
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),

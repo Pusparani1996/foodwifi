@@ -9,7 +9,13 @@ import 'package:http/http.dart' as http;
 class HomeSearchCubit extends Cubit<HomeSearchState> {
   HomeSearchCubit()
       : super(const HomeSearchState(
-            alldata: null, isloading: true, homesatatus: Status.initial)) {
+          alldata: null,
+          isloading: true,
+          homesatatus: Status.initial,
+          // isfreedelinery: false,
+          // ishalal: false,
+          // ispromo: false
+        )) {
     // gethomesearch();
   }
 
@@ -21,12 +27,27 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
     String? storetypeid,
     String? cuisinesid,
     String? allcuisions,
+    String? freedelivery,
+    String? promo,
+    String? halal,
+    bool? isfreedelivery,
+    bool? ishalal,
+    bool? ispromo,
   }) async {
     emit(const HomeSearchState(
-        alldata: null, isloading: false, homesatatus: Status.loading));
+      alldata: null,
+      isloading: false,
+      homesatatus: Status.loading,
+      // isfreedelinery: false,
+      // ishalal: false,
+      // ispromo: false
+    ));
     log("sort_by id from cubit : $sortbyid");
     log("cuisines id from cubit : $cuisinesid");
     log("storetypeid id  from cubit : $storetypeid");
+    log("freedelivery id  from cubit : $freedelivery");
+    log("halal id  from cubit : $halal");
+    log("promo id  from cubit : $promo");
     try {
       final queryParameters = {
         'lat': '24.7982274',
@@ -35,9 +56,9 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
         "sort_by": sortbyid ?? "1",
         "cuisines": cuisinesid ?? allcuisions,
         "store_type_id": storetypeid ?? "",
-        "halal": "",
-        "free_delivery": "",
-        "promo": ""
+        "halal": halal ?? "",
+        "free_delivery": freedelivery ?? "",
+        "promo": promo ?? ""
       };
       if (isMoredata) {
         final baseHeader = {'Branchid': "1"};
@@ -54,16 +75,26 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
           //  log(homesearchdata.toJson().toString());
 
           emit(HomeSearchState(
-              alldata: homesearchdata,
-              isloading: isMoredata,
-              homesatatus: Status.loaded));
+            alldata: homesearchdata,
+            isloading: isMoredata,
+            homesatatus: Status.loaded,
+            // isfreedelinery: freedelivery == null ? false : true,
+            // ishalal: halal == null ? false : true,
+            // ispromo: promo == null ? false : true,
+          ));
         }
       }
     } catch (e) {
       log("ERROR come from Home search filter$e");
 
       emit(HomeSearchState(
-          alldata: null, isloading: isMoredata, homesatatus: Status.error));
+        alldata: null,
+        isloading: isMoredata,
+        homesatatus: Status.error,
+        // isfreedelinery: false,
+        // ishalal: false,
+        // ispromo: false
+      ));
     }
   }
 }

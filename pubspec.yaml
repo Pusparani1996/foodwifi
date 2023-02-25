@@ -55,6 +55,7 @@ dependencies:
   intl: ^0.18.0
   bottom_sheet: ^3.1.2
   scrollable_positioned_list: ^0.3.5
+  bottom_navigation_bar: ^1.0.1
 
 
 flutter_icons:
@@ -106,6 +107,9 @@ flutter:
     - assets/images/valentine.gif
     - assets/images/splash.gif
     - assets/images/equilizer.gif
+    - assets/images/burgermyorder.png 
+    - assets/images/foodnewok.png
+    - assets/images/home-page-bottom.gif
 
     
   #   - images/a_dot_ham.jpeg

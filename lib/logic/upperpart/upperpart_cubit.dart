@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:foodwifi/logic/cubit/fetchdata_state.dart';
 import 'package:foodwifi/logic/upperpart/uppertpart_statte.dart';
-import 'package:foodwifi/model/foodwifimodel.dart';
 import 'package:foodwifi/model/upperpartmodel.dart';
 
 import 'package:http/http.dart' as http;

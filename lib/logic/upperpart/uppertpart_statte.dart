@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:foodwifi/model/foodwifimodel.dart';
 import 'package:foodwifi/model/upperpartmodel.dart';
 
 enum Status { initial, loading, loaded, error }

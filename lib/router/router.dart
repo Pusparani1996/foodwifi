@@ -3,6 +3,7 @@ import 'package:foodwifi/pages/cusinoesPage.dart';
 
 import 'package:foodwifi/pages/homepage.dart';
 import 'package:foodwifi/pages/mixedproduct.dart';
+import 'package:foodwifi/pages/navbar.dart';
 import 'package:foodwifi/pages/productupper.dart';
 import 'package:foodwifi/pages/search_page.dart';
 import 'package:foodwifi/pages/sortby_page.dart';
@@ -14,6 +15,9 @@ import 'package:foodwifi/pages/splashscreen.dart';
     AutoRoute(
       page: Splashscreen,
       initial: true,
+    ),
+    AutoRoute(
+      page: NavigationBarPage,
     ),
     AutoRoute(
       page: HomePage,

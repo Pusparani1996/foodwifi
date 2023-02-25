@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +14,7 @@ class SearcgCubit extends Cubit<SearchState> {
             radiostoretypelist: [],
             cuisinesidkey: [],
             cuisinesitems: [],
+            radiosortbylist: [],
             checkcuisinesidandname: {})) {
     getsearch();
   }
@@ -31,6 +31,7 @@ class SearcgCubit extends Cubit<SearchState> {
         radiostoretypelist: [],
         cuisinesidkey: [],
         cuisinesitems: [],
+        radiosortbylist: [],
         checkcuisinesidandname: {}));
 
     try {
@@ -42,8 +43,8 @@ class SearcgCubit extends Cubit<SearchState> {
           ),
           headers: baseHeader);
       List radiostoretypelist = [];
+      List<dynamic> radiosortbylist = [];
       List cuisinesitems = [];
-      List<Cuisine> cuisinesdata = [];
       List cuisinesidkey = [];
       Map checkcuisinesidandname = {};
 
@@ -52,7 +53,11 @@ class SearcgCubit extends Cubit<SearchState> {
         var searchdata = searchModelFromJson(response.body);
         for (var element in searchdata.storeTypes) {
           radiostoretypelist.add(element.id);
-          log("id :" + radiostoretypelist.toString());
+          log("id :$radiostoretypelist");
+        }
+        for (var element in searchdata.sortOptions) {
+          radiosortbylist.add(element.id);
+          log("id :$radiosortbylist");
         }
         for (var element in searchdata.cuisines) {
           cuisinesitems.add(element.cuisineName);
@@ -72,7 +77,8 @@ class SearcgCubit extends Cubit<SearchState> {
             radiostoretypelist: radiostoretypelist,
             cuisinesidkey: cuisinesidkey,
             cuisinesitems: cuisinesitems,
-            checkcuisinesidandname: checkcuisinesidandname));
+            checkcuisinesidandname: checkcuisinesidandname,
+            radiosortbylist: radiosortbylist));
       }
     } catch (e) {
       emit(const SearchState(
@@ -80,7 +86,8 @@ class SearcgCubit extends Cubit<SearchState> {
           radiostoretypelist: [],
           cuisinesidkey: [],
           cuisinesitems: [],
-          checkcuisinesidandname: {}));
+          checkcuisinesidandname: {},
+          radiosortbylist: []));
       //  log(" I m from SEARCH CUBIT  $e");
     }
   }

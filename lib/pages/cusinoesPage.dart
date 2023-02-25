@@ -1,29 +1,29 @@
 import 'dart:developer';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/search/search_cubit.dart';
 import 'package:foodwifi/model/searchModel.dart';
 import 'package:foodwifi/pages/search_page.dart';
-import 'package:foodwifi/router/router.gr.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 
 class CusinesPage extends StatefulWidget {
-  const CusinesPage(
-      {super.key,
-      required this.cusines,
-      required this.storetypes,
-      required this.showsearchrestuarent,
-      required this.abovetxt,
-      required this.sortby,
-      required this.showresetbtn,
-      required this.checkcuisines,
-      required this.cuisinesitems,
-      required this.freedilivery,
-      required this.cuisinesid,
-      this.showbelowhomesearch,
-      required this.allcuisines});
+  const CusinesPage({
+    super.key,
+    required this.cusines,
+    required this.storetypes,
+    required this.showsearchrestuarent,
+    required this.abovetxt,
+    required this.sortby,
+    required this.showresetbtn,
+    required this.checkcuisines,
+    required this.cuisinesitems,
+    required this.freedilivery,
+    required this.cuisinesid,
+    this.showbelowhomesearch,
+    required this.allcuisines,
+    //this.homereset
+  });
 
   final String? cusines;
   final String? storetypes;
@@ -38,6 +38,7 @@ class CusinesPage extends StatefulWidget {
   final String cuisinesid;
   final bool? showbelowhomesearch;
   final String allcuisines;
+  // final bool? homereset;
 
   @override
   State<CusinesPage> createState() => _CusinesPageState();
@@ -56,6 +57,7 @@ class _CusinesPageState extends State<CusinesPage> {
   Map values = {};
   String allcuisines = "";
   bool addcheckcuisinesdata = false;
+  bool homereset = false;
 
   @override
   void initState() {
@@ -72,9 +74,9 @@ class _CusinesPageState extends State<CusinesPage> {
     if (widget.showsearchrestuarent == true ||
         widget.showbelowhomesearch == true) {
       if (widget.allcuisines.isNotEmpty) {
-        log(" first IF all cuisines : ${widget.allcuisines}");
+        // log(" first IF all cuisines : ${widget.allcuisines}");
         List data = widget.allcuisines.split(',');
-        log("DATA : $data");
+        //log("DATA : $data");
         for (var element in widget.cuisinesitems) {
           if (data.contains(widget.checkcuisines[element].toString())) {
             values[element] = true;
@@ -89,10 +91,10 @@ class _CusinesPageState extends State<CusinesPage> {
       }
     } else {
       if (widget.cuisinesid.isNotEmpty) {
-        log(" second else all cuisines : ${widget.allcuisines}");
+        // log(" second else all cuisines : ${widget.allcuisines}");
         if (widget.allcuisines.isNotEmpty) {
           List data = widget.allcuisines.split(',');
-          log(" second else data : ${data}");
+          // log(" second else data : ${data}");
           for (var element in widget.cuisinesitems) {
             if (data.contains(widget.checkcuisines[element].toString())) {
               values[element] = true;
@@ -100,7 +102,7 @@ class _CusinesPageState extends State<CusinesPage> {
               values[element] = false;
             }
           }
-          log(" second else  values : $values");
+          // log(" second else  values : $values");
         } else {
           for (var element in widget.cuisinesitems) {
             if (widget.checkcuisines[element].toString() == widget.cuisinesid) {
@@ -122,14 +124,14 @@ class _CusinesPageState extends State<CusinesPage> {
   getcgeckboxitems() {
     values.forEach((key, value) {
       if (value == true) {
-        log("value : $value");
+        // log("value : $value");
         temparray.add(widget.checkcuisines[key]);
       }
     });
     setState(() {
       allcuisines = temparray.join(',');
     });
-    log("FROM FUNCTION ALLCUISINES : $allcuisines");
+    // log("FROM FUNCTION ALLCUISINES : $allcuisines");
   }
 
   @override
@@ -358,6 +360,7 @@ class _CusinesPageState extends State<CusinesPage> {
                                 addcheckcuisinesdata = true;
                               });
                               Navigator.pop(context, allcuisines);
+                              log("POP Allcuisines : $allcuisines ");
                             } else {
                               getcgeckboxitems();
                               setState(() {
@@ -398,12 +401,12 @@ class _CusinesPageState extends State<CusinesPage> {
                                   // color: Colors.grey,
                                   child: InkWell(
                                     onTap: () {
-                                      log("press");
+                                      log("press Pop");
                                       if (widget.showbelowhomesearch == true) {
                                         setState(() {
                                           resetdata = false;
                                         });
-                                        Navigator.pop(context);
+                                        Navigator.pop(context, "true");
                                       } else {
                                         setState(() {
                                           resetdata = true;
@@ -436,7 +439,6 @@ class _CusinesPageState extends State<CusinesPage> {
                           : Card(
                               elevation: 20,
                               shadowColor: Colors.grey,
-                              // color: Colors.grey,
                               child: InkWell(
                                 onTap: () {
                                   if (widget.showbelowhomesearch == true) {
@@ -444,11 +446,10 @@ class _CusinesPageState extends State<CusinesPage> {
                                     setState(() {
                                       resetdata = false;
                                     });
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, "true");
                                   } else {
                                     setState(() {
                                       resetdata = true;
-                                      // showsortby = true;
                                     });
                                   }
                                 },

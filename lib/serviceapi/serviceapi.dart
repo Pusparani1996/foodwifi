@@ -9,7 +9,7 @@ class ServiceApi {
   Future<Map<String, dynamic>?> getcustomreview(
     String id,
   ) async {
-    log("REVIEW SERVICE API :" + id.toString());
+    log("REVIEW SERVICE API :$id");
     try {
       final queryParameters = {
         'id': id,
@@ -28,7 +28,7 @@ class ServiceApi {
         return reviewdata3;
       }
     } catch (e) {
-      log("error come from review SERVICEAPI" + e.toString());
+      log("error come from review SERVICEAPI$e");
     }
   }
 
@@ -56,7 +56,7 @@ class ServiceApi {
         return alldata;
       }
     } catch (e) {
-      log("error come from review SERVICEAPI" + e.toString());
+      log("error come from review SERVICEAPI$e");
     }
     return null;
   }

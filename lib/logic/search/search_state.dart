@@ -12,10 +12,12 @@ class SearchState extends Equatable {
     required this.cuisinesitems,
     required this.cuisinesidkey,
     required this.checkcuisinesidandname,
+    required this.radiosortbylist,
   });
   final SearchStatus status;
   final SearchModel? searchdata;
   final List<dynamic> radiostoretypelist;
+  final List<dynamic> radiosortbylist;
   final List<dynamic> cuisinesitems;
 
   final List<dynamic> cuisinesidkey;

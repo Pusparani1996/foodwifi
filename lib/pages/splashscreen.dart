@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:foodwifi/pages/homepage.dart';
 import 'package:foodwifi/router/router.gr.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -19,14 +18,8 @@ class _SplashscreenState extends State<Splashscreen> {
   }
 
   void pagenavigateaftersplash() {
-    Future.delayed(const Duration(milliseconds: 1650)).whenComplete(() =>
-        context.router.replace(HomeRoute(
-            cuisines: '',
-            sortby: '',
-            storetype: '',
-            cuisinesid: '',
-            sortbyid: '',
-            storetypeid: '')));
+    Future.delayed(const Duration(milliseconds: 1650))
+        .whenComplete(() => context.router.replace(const NavigationBarRoute()));
   }
 
   @override

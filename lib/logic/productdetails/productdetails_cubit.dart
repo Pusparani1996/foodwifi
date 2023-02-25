@@ -24,7 +24,7 @@ class ProductsDetailsCubit extends Cubit<ProductsDetailsState> {
     //  log("Is Loading");
     // log("$isLoading");
     try {
-      log("PRODUCT DETAILS CUBIT id : " + id.toString());
+      log("PRODUCT DETAILS CUBIT id : $id");
 
       final baseHeader = {'Branchid': "1"};
       final response = await http.get(
@@ -38,7 +38,7 @@ class ProductsDetailsCubit extends Cubit<ProductsDetailsState> {
         var productdetails = ProductDetailsModel.fromJson(data);
 
         log('Successfully get Product Details Data');
-        log("PRODUCT DETAILS CUBIT : " + productdetails.toJson().toString());
+        log("PRODUCT DETAILS CUBIT : ${productdetails.toJson()}");
 
         emit(ProductsDetailsState(
             status: DetailsStatus.loaded, productdetails: productdetails));

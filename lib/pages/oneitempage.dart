@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/belowpart/belowpart_cubit.dart';
-import 'package:foodwifi/model/bellowanothermodel.dart';
+
 import 'package:foodwifi/model/joinmodel.dart';
 
 class FirstOneItemPage extends StatelessWidget {

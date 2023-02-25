@@ -2,7 +2,6 @@
 //
 //     final joinReviewBellowModel = joinReviewBellowModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<JoinReviewBellowModel> joinReviewBellowModelFromJson(String str) =>

@@ -51,7 +51,7 @@ class FetchdataCubit extends Cubit<FatchAllDataState> {
       //return null;
     } catch (e) {
       log("comming fron Fatch cubit");
-      log("ERROR COME FROM FETCH ALL CUBIT" + e.toString());
+      log("ERROR COME FROM FETCH ALL CUBIT$e");
       log("comming fron Fatch cubit");
     }
     return null;

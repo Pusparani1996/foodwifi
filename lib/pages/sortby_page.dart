@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/search/search_cubit.dart';
 import 'package:foodwifi/model/searchModel.dart';
 import 'package:foodwifi/pages/search_page.dart';
-import 'package:foodwifi/pages/searchrestuarentfilter_page.dart';
+
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 
 class SortByPage extends StatefulWidget {
@@ -23,6 +23,9 @@ class SortByPage extends StatefulWidget {
     required this.promo,
     required this.cuisinesid,
     required this.storetypeid,
+    required this.sortbyname,
+    required this.radiosortbyidlist,
+    required this.sortbyid,
   });
 
   final String? cusines;
@@ -36,6 +39,9 @@ class SortByPage extends StatefulWidget {
   final bool? showbelowhomesearch;
   final String cuisinesid;
   final String storetypeid;
+  final String sortbyid;
+  final String sortbyname;
+  final List radiosortbyidlist;
 
   // final String halal;
   // final String promo;
@@ -55,18 +61,25 @@ class _SortByPageState extends State<SortByPage> {
   String shortby = 'Sort by';
 
   List<SortOption> searchdata = [];
+  List<SortOption> radiosortby = [];
+  List radiosortbylist = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     context.read<SearcgCubit>().getsearch();
+    log("Sort by init");
+    log("Sort by id init : ${widget.sortbyid}");
+
+    if (widget.sortbyid.isNotEmpty) {
+      log("Sort by init if ");
+
+      setState(() {
+        selectedindex = int.parse(widget.sortbyid) - 1;
+      });
+      log("SELECTED INDEX FROM Sortby : $selectedindex");
+    }
   }
-
-  // void dispose() {
-  //   super.dispose();
-
-  //   // Your own cleanup code here...
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -327,15 +340,19 @@ class _SortByPageState extends State<SortByPage> {
                               : Card(
                                   elevation: 20,
                                   shadowColor: Colors.grey,
-                                  // color: Colors.grey,
                                   child: InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        resetdata = true;
-                                        // cuisinsid = searchdata[selectedindex!]
-                                        //     .id
-                                        //     .toString();
-                                      });
+                                      if (widget.showbelowhomesearch == true) {
+                                        log("press2");
+                                        setState(() {
+                                          resetdata = false;
+                                        });
+                                        Navigator.pop(context, "true");
+                                      } else {
+                                        setState(() {
+                                          resetdata = true;
+                                        });
+                                      }
                                     },
                                     child: Container(
                                       height: 45,
@@ -362,15 +379,19 @@ class _SortByPageState extends State<SortByPage> {
                           : Card(
                               elevation: 20,
                               shadowColor: Colors.grey,
-                              // color: Colors.grey,
                               child: InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    resetdata = true;
-                                    // cuisinsid = searchdata[selectedindex!]
-                                    //     .id
-                                    //     .toString();
-                                  });
+                                  if (widget.showbelowhomesearch == true) {
+                                    log("press2");
+                                    setState(() {
+                                      resetdata = false;
+                                    });
+                                    Navigator.pop(context, "true");
+                                  } else {
+                                    setState(() {
+                                      resetdata = true;
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   height: 45,

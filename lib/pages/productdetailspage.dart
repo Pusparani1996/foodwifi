@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -7,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/productdetails/productdetails_cubit.dart';
 
 import 'package:foodwifi/model/joinmodel.dart';
-import 'package:foodwifi/model/productdetailsModel.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -84,7 +82,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             ],
           ),
         );
-        ;
+
       case DetailsStatus.loaded:
         return Scaffold(
           body: SingleChildScrollView(
@@ -211,7 +209,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       padding: const EdgeInsets.all(16.0),
                       child: ListView(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         children: [
                           SizedBox(
                             child: Row(
@@ -513,7 +511,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                   Container(
                     height: 200,
-                    color: Color.fromARGB(255, 237, 232, 232),
+                    color: const Color.fromARGB(255, 237, 232, 232),
                   ),
                 ],
               ),

@@ -1,10 +1,8 @@
 import 'dart:developer';
-import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_route/auto_route.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodwifi/homedatalist/imphalmostfavourite.dart';
 import 'package:foodwifi/homedatalist/newonfoodwifi.dart';
@@ -14,7 +12,6 @@ import 'package:foodwifi/logic/cubit/fetchdata_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/home_search/homesearch_cubit.dart';
 import 'package:foodwifi/logic/search/search_cubit.dart';
-import 'package:foodwifi/logic/searchrestuarentfilter/searchfilter_cubit.dart';
 
 import 'package:foodwifi/model/foodwifimodel.dart';
 
@@ -30,26 +27,26 @@ import 'package:foodwifi/pages/storetypespage.dart';
 
 import 'package:foodwifi/router/router.gr.dart';
 
-import '../logic/home_search/homesearch_state.dart';
-
 class HomePage extends StatefulWidget {
-  final String cuisines;
-  final String sortby;
-  final String storetype;
-  final String cuisinesid;
-  final String sortbyid;
-  final String storetypeid;
+  final String? cuisines;
+  final String? sortby;
+  final String? storetype;
+  final String? cuisinesid;
+  final String? sortbyid;
+  final String? storetypeid;
+
   // final List<dynamic> radiostoretypeidlist;
 
   const HomePage({
     super.key,
-    required this.cuisines,
-    required this.sortby,
-    required this.storetype,
-    required this.cuisinesid,
-    required this.sortbyid,
-    required this.storetypeid,
-    //required this.radiostoretypeidlist,
+    this.cuisines,
+    this.sortby,
+    this.storetype,
+    this.cuisinesid,
+    this.sortbyid,
+    this.storetypeid,
+
+    // this.radiostoretypeidlist,
   });
 
   @override
@@ -77,11 +74,23 @@ class _HomePageState extends State<HomePage>
 
   List<dynamic> radiostoretype = [];
   List radiostoretypelist = [];
+  List<dynamic> radiosortby = [];
+  List radiosortbylist = [];
   List cuisinesitems = [];
   List<Cuisine> cuisinesdata = [];
   List cuisinesidkey = [];
 
   Map checkcuisinesidandname = {};
+  String cuisinesname = "";
+  String sortbyname = "";
+  String storetypesname = "";
+  String halalid = "";
+  String freedeliveryid = "";
+  String promoid = "";
+  bool isfreedelivery = false;
+  bool ishalal = false;
+  bool ispromo = false;
+  String homereset = "";
 
   @override
   void initState() {
@@ -114,8 +123,8 @@ class _HomePageState extends State<HomePage>
   Future<void> navigatetosortby(
       BuildContext context, void Function(void Function()) setState) async {
     final result = await context.router.push(SortByRoute(
-      cusines: widget.cuisines,
-      storetypes: widget.storetype,
+      cusines: cuisinesname,
+      storetypes: storetypesname,
       showsearchrestuarent: false,
       abovetxt: "",
       showresetbtn: true,
@@ -125,19 +134,35 @@ class _HomePageState extends State<HomePage>
       storetypeid: storetypeid,
       halal: '',
       promo: '',
+      sortbyname: sortbyname,
+      radiosortbyidlist: radiosortbylist,
+      sortbyid: sortbyid,
     ));
+    log("Sort id : $sortbyid");
     if (result != null) {
-      context.read<HomeSearchCubit>().gethomesearch(
-          sortbyid: result.toString(),
-          cuisinesid: cuisinesid,
-          storetypeid: storetypeid);
-      setState(
-        () {
-          sortbyid = result.toString();
-        },
-      );
+      if (result.toString() == "true") {
+        setState(() {
+          cuisinesname = "";
+          sortbyname = "";
+          storetypesname = "";
+        });
+        context
+            .read<HomeSearchCubit>()
+            .gethomesearch(sortbyid: "", cuisinesid: "", storetypeid: "");
+      } else {
+        setState(
+          () {
+            sortbyid = result.toString();
+            sortbyname = "Sort by";
+          },
+        );
+        context.read<HomeSearchCubit>().gethomesearch(
+            sortbyid: result.toString(),
+            cuisinesid: cuisinesid,
+            storetypeid: storetypeid);
+      }
 
-      print(sortbyid.toString());
+      log(sortbyid.toString());
     }
   }
 
@@ -149,7 +174,7 @@ class _HomePageState extends State<HomePage>
         context,
         MaterialPageRoute(
           builder: (context) => CusinesPage(
-            cusines: widget.cuisines,
+            cusines: cuisinesname,
             storetypes: widget.storetype,
             showsearchrestuarent: false,
             abovetxt: "",
@@ -161,19 +186,44 @@ class _HomePageState extends State<HomePage>
             cuisinesid: cuisinesid,
             showbelowhomesearch: true,
             allcuisines: cuisinesid,
+            // homereset: false,
           ),
         ));
     if (result != null) {
-      context
-          .read<HomeSearchCubit>()
-          .gethomesearch(allcuisions: result.toString());
-      setState(
-        () {
-          cuisinesid = result.toString();
-        },
-      );
-
-      print(cuisinesid.toString());
+      // log("First if");
+      if (result.toString() == "true") {
+        //log("Second if");
+        setState(() {
+          cuisinesname = "";
+          sortbyname = "";
+          storetypesname = "";
+        });
+        //log("Cuisines :  $cuisinesname");
+        context.read<HomeSearchCubit>().gethomesearch(
+              allcuisions: "",
+              sortbyid: "",
+              storetypeid: "",
+              freedelivery: isfreedelivery == true ? freedeliveryid : "",
+              halal: ishalal == true ? halalid : "",
+              promo: ispromo ? promoid : "",
+            );
+      } else {
+        setState(
+          () {
+            cuisinesid = result.toString();
+            cuisinesname = "Cuisines";
+          },
+        );
+        // log("Else cuisines : $cuisinesname");
+        context.read<HomeSearchCubit>().gethomesearch(
+              allcuisions: result.toString(),
+              sortbyid: sortbyid,
+              storetypeid: storetypeid,
+              freedelivery: isfreedelivery == true ? freedeliveryid : "",
+              halal: ishalal == true ? halalid : "",
+              promo: ispromo ? promoid : "",
+            );
+      }
     }
   }
 
@@ -198,18 +248,77 @@ class _HomePageState extends State<HomePage>
           ),
         ));
     if (result != null) {
-      context.read<HomeSearchCubit>().gethomesearch(
-          storetypeid: result.toString(),
-          cuisinesid: cuisinesid,
-          sortbyid: sortbyid);
-      setState(
-        () {
-          storetypeid = result.toString();
-        },
-      );
+      if (result.toString() == "true") {
+        setState(
+          () {
+            cuisinesname = "";
+            sortbyname = "";
+            storetypesname = "";
+          },
+        );
+        context.read<HomeSearchCubit>().gethomesearch(
+              storetypeid: "",
+              cuisinesid: "",
+              sortbyid: "",
+              freedelivery: isfreedelivery == true ? freedeliveryid : "",
+              halal: ishalal == true ? halalid : "",
+              promo: ispromo ? promoid : "",
+            );
+      } else {
+        setState(
+          () {
+            storetypeid = result.toString();
+            storetypesname = "Store types";
+          },
+        );
+        context.read<HomeSearchCubit>().gethomesearch(
+              storetypeid: result.toString(),
+              cuisinesid: cuisinesid,
+              sortbyid: sortbyid,
+              freedelivery: isfreedelivery == true ? freedeliveryid : "",
+              halal: ishalal == true ? halalid : "",
+              promo: ispromo ? promoid : "",
+            );
+      }
 
-      print(storetypeid.toString());
+      // log(storetypeid.toString());
     }
+  }
+
+  Future<void> getfreedelivery(BuildContext context,
+      void Function(void Function()) setState, bool isfreedelivery) async {
+    await context.read<HomeSearchCubit>().gethomesearch(
+          storetypeid: storetypeid,
+          cuisinesid: cuisinesid,
+          sortbyid: sortbyid,
+          freedelivery: isfreedelivery == true ? freedeliveryid : "",
+          halal: ishalal == true ? halalid : "",
+          promo: ispromo ? promoid : "",
+        );
+  }
+
+  Future<void> gethalal(BuildContext context,
+      void Function(void Function()) setState, bool ishalal) async {
+    await context.read<HomeSearchCubit>().gethomesearch(
+          storetypeid: storetypeid,
+          cuisinesid: cuisinesid,
+          sortbyid: sortbyid,
+          freedelivery: isfreedelivery == true ? freedeliveryid : "",
+          halal: ishalal == true ? halalid : "",
+          promo: ispromo ? promoid : "",
+        );
+  }
+
+  Future<void> getpromo(BuildContext context,
+      void Function(void Function()) setState, bool ispromo) async {
+    await context.read<HomeSearchCubit>().gethomesearch(
+          storetypeid: storetypeid,
+          cuisinesid: cuisinesid,
+          sortbyid: sortbyid,
+          freedelivery: isfreedelivery == true ? freedeliveryid : "",
+          halal: ishalal == true ? halalid : "",
+          promo: ispromo ? promoid : "",
+        );
   }
 
   @override
@@ -222,9 +331,13 @@ class _HomePageState extends State<HomePage>
 
     firstitemlist = alldata.firstlistitems;
     radiostoretype = searcgstatus.radiostoretypelist;
+    radiosortby = searcgstatus.radiosortbylist;
     cuisinesidkey = searcgstatus.cuisinesidkey;
     cuisinesitems = searcgstatus.cuisinesitems;
     checkcuisinesidandname = searcgstatus.checkcuisinesidandname;
+    // isfreedelivery = homesearchdata.isfreedelinery;
+    // ishalal = homesearchdata.ishalal;
+    // ispromo = homesearchdata.ispromo;
 
     // var homesearchstatus = homesearchdata.homesatatus;
     if (homesearchdata.alldata != null) {
@@ -296,7 +409,11 @@ class _HomePageState extends State<HomePage>
                 pinned: pinned,
                 snap: snap,
                 floating: floating,
-                toolbarHeight: scrollvalue >= 1590 ? 141 : 103,
+                toolbarHeight:
+                    homebelowdara.isNotEmpty && scrollvalue >= 1590 ||
+                            homebelowdara.isEmpty && scrollvalue >= 1000
+                        ? 141
+                        : 103,
 
                 // expandedHeight: 150.0,
                 flexibleSpace: FlexibleSpaceBar(
@@ -499,7 +616,9 @@ class _HomePageState extends State<HomePage>
                               ),
 
                               // TAB BAR
-                              scrollvalue >= 1590
+                              homebelowdara.isNotEmpty && scrollvalue >= 1590 ||
+                                      homebelowdara.isEmpty &&
+                                          scrollvalue >= 1000
                                   ? Container(
                                       // height: 100,
                                       color: Colors.white,
@@ -529,112 +648,34 @@ class _HomePageState extends State<HomePage>
                                                         context,
                                                         setState,
                                                       );
+                                                    } else if (index == 3) {
+                                                      setState(() {
+                                                        freedeliveryid = "1";
+                                                        isfreedelivery =
+                                                            !isfreedelivery;
+                                                      });
+                                                      log(" isfreedelivery on tap : $isfreedelivery");
+                                                      getfreedelivery(
+                                                          context,
+                                                          setState,
+                                                          isfreedelivery);
+                                                    } else if (index == 4) {
+                                                      setState(() {
+                                                        halalid = "1";
+                                                        ishalal = !ishalal;
+                                                      });
+                                                      log(" ishalal on tap : $ishalal");
+                                                      gethalal(context,
+                                                          setState, ishalal);
+                                                    } else {
+                                                      setState(() {
+                                                        promoid = "1";
+                                                        ispromo = !ispromo;
+                                                      });
+                                                      log(" ispromo on tap : $ispromo");
+                                                      getpromo(context,
+                                                          setState, ispromo);
                                                     }
-                                                    // else if (index == 3) {
-                                                    //   setState(() {
-                                                    //     widget.freedeliverycolor =
-                                                    //         !widget.freedeliverycolor;
-                                                    //     freedeliveryid = "1";
-                                                    //     freedelivery = "Free delivery";
-                                                    //   });
-                                                    //   log(" RESTU....free delivery color : ${widget.freedeliverycolor}");
-
-                                                    //   Navigator.push(
-                                                    //       context,
-                                                    //       MaterialPageRoute(
-                                                    //         builder: (context) => SearchPage(
-                                                    //           textvalue: widget.itemname,
-                                                    //           cusines: widget.cusines!,
-                                                    //           showsortby: true,
-                                                    //           storetypes: widget.storetypes!,
-                                                    //           sortbyid: widget.sortbyid!,
-                                                    //           sortby: widget.sortby!,
-                                                    //           fromsortshoerestuarent: true,
-                                                    //           cuisinesid: widget.cusinesid!,
-                                                    //           storetypeid: widget.sorttypeid!,
-                                                    //           resetdata: false,
-                                                    //           checkcuisinesname:
-                                                    //               widget.checkcuisinesid,
-                                                    //           addcheckcuisinesdata: false,
-                                                    //           freedelivery: freedelivery,
-                                                    //           freedeliveryid: freedeliveryid,
-                                                    //           halal: widget.halal_id,
-                                                    //           promoid: widget.promo_id,
-                                                    //           freedeliverycolor:
-                                                    //               widget.freedeliverycolor,
-                                                    //           halalcolor: widget.halalcolor,
-                                                    //           promocolor: widget.promocolor,
-                                                    //         ),
-                                                    //       ));
-                                                    // } else if (index == 4) {
-                                                    //   setState(() {
-                                                    //     halalid = "1";
-                                                    //     widget.halalcolor = !widget.halalcolor;
-                                                    //   });
-                                                    //   log("RESTu.. halalcolor on tap : ${widget.halalcolor}");
-                                                    //   Navigator.push(
-                                                    //       context,
-                                                    //       MaterialPageRoute(
-                                                    //         builder: (context) => SearchPage(
-                                                    //           textvalue: widget.itemname,
-                                                    //           cusines: widget.cusines!,
-                                                    //           showsortby: true,
-                                                    //           storetypes: widget.storetypes!,
-                                                    //           sortbyid: widget.sortbyid!,
-                                                    //           sortby: widget.sortby!,
-                                                    //           fromsortshoerestuarent: true,
-                                                    //           cuisinesid: widget.cusinesid!,
-                                                    //           storetypeid: widget.sorttypeid!,
-                                                    //           resetdata: false,
-                                                    //           checkcuisinesname:
-                                                    //               widget.checkcuisinesid,
-                                                    //           addcheckcuisinesdata: false,
-                                                    //           freedelivery: freedelivery,
-                                                    //           freedeliveryid:
-                                                    //               widget.freedelery_id,
-                                                    //           halal: halalid,
-                                                    //           promoid: widget.promo_id,
-                                                    //           freedeliverycolor:
-                                                    //               widget.freedeliverycolor,
-                                                    //           halalcolor: widget.halalcolor,
-                                                    //           promocolor: widget.promocolor,
-                                                    //         ),
-                                                    //       ));
-                                                    // } else {
-                                                    //   setState(() {
-                                                    //     promoid = "1";
-                                                    //     widget.promocolor = !widget.promocolor;
-                                                    //   });
-                                                    //   log("RESTu.. promocolor on tap : ${widget.promocolor}");
-                                                    //   Navigator.push(
-                                                    //       context,
-                                                    //       MaterialPageRoute(
-                                                    //         builder: (context) => SearchPage(
-                                                    //           textvalue: widget.itemname,
-                                                    //           cusines: widget.cusines!,
-                                                    //           showsortby: true,
-                                                    //           storetypes: widget.storetypes!,
-                                                    //           sortbyid: widget.sortbyid!,
-                                                    //           sortby: widget.sortby!,
-                                                    //           fromsortshoerestuarent: true,
-                                                    //           cuisinesid: widget.cusinesid!,
-                                                    //           storetypeid: widget.sorttypeid!,
-                                                    //           resetdata: false,
-                                                    //           checkcuisinesname:
-                                                    //               widget.checkcuisinesid,
-                                                    //           addcheckcuisinesdata: false,
-                                                    //           freedelivery: freedelivery,
-                                                    //           freedeliveryid:
-                                                    //               widget.freedelery_id,
-                                                    //           halal: widget.halal_id,
-                                                    //           promoid: promoid,
-                                                    //           freedeliverycolor:
-                                                    //               widget.freedeliverycolor,
-                                                    //           halalcolor: widget.halalcolor,
-                                                    //           promocolor: widget.promocolor,
-                                                    //         ),
-                                                    //       ));
-                                                    //  }
                                                   },
                                                   child: Padding(
                                                     padding:
@@ -643,99 +684,88 @@ class _HomePageState extends State<HomePage>
                                                     child: Container(
                                                       height: 15,
                                                       decoration: BoxDecoration(
-                                                          color: Colors.grey,
-                                                          // color: tabbar[index] == widget.sortby
-                                                          //     ? const Color.fromARGB(
-                                                          //         255, 111, 241, 176)
-                                                          //     : tabbar[index] == widget.storetypes
-                                                          //         ? const Color.fromARGB(
-                                                          //             255, 111, 241, 176)
-                                                          //         : tabbar[index] ==
-                                                          //                 widget.cusines
-                                                          //             ? const Color.fromARGB(
-                                                          //                 255, 111, 241, 176)
+                                                          color: tabbar[
+                                                                      index] ==
+                                                                  sortbyname
+                                                              ? const Color.fromARGB(
+                                                                  255,
+                                                                  111,
+                                                                  241,
+                                                                  176)
+                                                              : tabbar[index] ==
+                                                                      cuisinesname
+                                                                  ? const Color
+                                                                          .fromARGB(
+                                                                      255,
+                                                                      111,
+                                                                      241,
+                                                                      176)
+                                                                  : tabbar[index] ==
+                                                                          storetypesname
+                                                                      ? const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          111,
+                                                                          241,
+                                                                          176)
 
-                                                          //             // free delivery
-                                                          //             : widget.freedeliverycolor
-                                                          //                 ? index == 3
-                                                          //                     ? const Color.fromARGB(
-                                                          //                         255, 111, 241, 176)
-                                                          //                     : widget.promocolor
-                                                          //                         ? index == 5
-                                                          //                             ? const Color.fromARGB(
-                                                          //                                 255,
-                                                          //                                 111,
-                                                          //                                 241,
-                                                          //                                 176)
-                                                          //                             : widget
-                                                          //                                     .halalcolor
-                                                          //                                 ? index ==
-                                                          //                                         4
-                                                          //                                     ? const Color.fromARGB(
-                                                          //                                         255, 111, 241, 176)
-                                                          //                                     : const Color.fromARGB(
-                                                          //                                         255,
-                                                          //                                         219,
-                                                          //                                         233,
-                                                          //                                         231)
-                                                          //                                 : const Color.fromARGB(
-                                                          //                                     255,
-                                                          //                                     219,
-                                                          //                                     233,
-                                                          //                                     231)
-                                                          //                         : widget
-                                                          //                                 .halalcolor
-                                                          //                             ? index == 4
-                                                          //                                 ? const Color.fromARGB(
-                                                          //                                     255,
-                                                          //                                     111,
-                                                          //                                     241,
-                                                          //                                     176)
-                                                          //                                 : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                             : const Color.fromARGB(255, 219, 233, 231)
+                                                                      // free delivery
+                                                                      : isfreedelivery
+                                                                          ? index == 3
+                                                                              ? const Color.fromARGB(255, 111, 241, 176)
+                                                                              : ispromo
+                                                                                  ? index == 5
+                                                                                      ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                      : ishalal
+                                                                                          ? index == 4
+                                                                                              ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                              : const Color.fromARGB(255, 219, 233, 231)
+                                                                                          : const Color.fromARGB(255, 219, 233, 231)
+                                                                                  : ishalal
+                                                                                      ? index == 4
+                                                                                          ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                          : const Color.fromARGB(255, 219, 233, 231)
+                                                                                      : const Color.fromARGB(255, 219, 233, 231)
 
-                                                          //                 //halal
+                                                                          //halal
 
-                                                          //                 : widget.halalcolor
-                                                          //                     ? index == 4
-                                                          //                         ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                         : widget.promocolor
-                                                          //                             ? index == 5
-                                                          //                                 ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                                 : widget.freedeliverycolor
-                                                          //                                     ? index == 3
-                                                          //                                         ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                                         : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                                     : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                             : widget.freedeliverycolor
-                                                          //                                 ? index == 3
-                                                          //                                     ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                                     : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                                 : const Color.fromARGB(255, 219, 233, 231)
+                                                                          : ishalal
+                                                                              ? index == 4
+                                                                                  ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                  : ispromo
+                                                                                      ? index == 5
+                                                                                          ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                          : isfreedelivery
+                                                                                              ? index == 3
+                                                                                                  ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                                  : const Color.fromARGB(255, 219, 233, 231)
+                                                                                              : const Color.fromARGB(255, 219, 233, 231)
+                                                                                      : isfreedelivery
+                                                                                          ? index == 3
+                                                                                              ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                              : const Color.fromARGB(255, 219, 233, 231)
+                                                                                          : const Color.fromARGB(255, 219, 233, 231)
 
-                                                          //                     // Promo
+                                                                              // Promo
 
-                                                          //                     : widget.promocolor
-                                                          //                         ? index == 5
-                                                          //                             ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                             : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                         : widget.halalcolor
-                                                          //                             ? index == 4
-                                                          //                                 ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                                 : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                             : widget.freedeliverycolor
-                                                          //                                 ? index == 5
-                                                          //                                     ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                                     : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                                 : widget.freedeliverycolor
-                                                          //                                     ? index == 5
-                                                          //                                         ? const Color.fromARGB(255, 111, 241, 176)
-                                                          //                                         : const Color.fromARGB(255, 219, 233, 231)
-                                                          //                                     : const Color.fromARGB(255, 219, 233, 231),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      20)),
+                                                                              : ispromo
+                                                                                  ? index == 5
+                                                                                      ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                      : const Color.fromARGB(255, 219, 233, 231)
+                                                                                  : ishalal
+                                                                                      ? index == 4
+                                                                                          ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                          : const Color.fromARGB(255, 219, 233, 231)
+                                                                                      : isfreedelivery
+                                                                                          ? index == 5
+                                                                                              ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                              : const Color.fromARGB(255, 219, 233, 231)
+                                                                                          : isfreedelivery
+                                                                                              ? index == 5
+                                                                                                  ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                                  : const Color.fromARGB(255, 219, 233, 231)
+                                                                                              : const Color.fromARGB(255, 219, 233, 231),
+                                                          borderRadius: BorderRadius.circular(20)),
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -770,21 +800,21 @@ class _HomePageState extends State<HomePage>
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 200,
-                        width: 330,
-                        child: Image.asset(
-                          "assets/images/valentine.gif",
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   color: Colors.white,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: Container(
+                  //       height: 200,
+                  //       width: 330,
+                  //       child: Image.asset(
+                  //         "assets/images/valentine.gif",
+                  //         fit: BoxFit.fill,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
 
                   // LIST ONE
 
@@ -883,6 +913,25 @@ class _HomePageState extends State<HomePage>
                   BelowHomeone(
                     homebelowdara: homebelowdara,
                   ),
+                  const SizedBox(
+                    height: 7,
+                  ),
+
+                  Container(
+                    color: Colors.white,
+                    height: MediaQuery.of(context).size.height / 5.5,
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Image.asset(
+                          "assets/images/home-page-bottom.gif",
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  )
 
                   // index 4
                   //item 6

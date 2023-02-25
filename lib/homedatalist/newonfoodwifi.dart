@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:foodwifi/model/foodwifimodel.dart';
-import 'package:foodwifi/pages/searchrestuarentfilter_page.dart';
 import 'package:foodwifi/router/router.gr.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 
@@ -19,7 +18,7 @@ class NewOnFoodWifiHotelImolist extends StatelessWidget {
       padding: const EdgeInsets.only(top: 7),
       child: Container(
         color: Colors.white,
-        height: 280,
+        height: 250,
         child: Column(
           children: [
             Padding(
@@ -50,7 +49,7 @@ class NewOnFoodWifiHotelImolist extends StatelessWidget {
                         width: 350,
                       )
                     : ListView.builder(
-                        controller: PageController(viewportFraction: 0.75),
+                        controller: PageController(viewportFraction: 0.6),
                         scrollDirection: Axis.horizontal,
                         physics: const PageScrollPhysics()
                             .applyTo(const BouncingScrollPhysics()),
@@ -76,8 +75,8 @@ class NewOnFoodWifiHotelImolist extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    height: 140,
-                                    width: 140,
+                                    height: 100,
+                                    width: 100,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: CachedNetworkImage(
@@ -117,13 +116,17 @@ class NewOnFoodWifiHotelImolist extends StatelessWidget {
                                   const SizedBox(
                                     height: 3,
                                   ),
-                                  Text(
-                                    "${firstitemlist[3][index]!.description}",
-                                    style: const TextStyle(
-                                        fontSize: 10,
-                                        color:
-                                            Color.fromARGB(255, 131, 130, 130)),
-                                  ),
+                                  // firstitemlist[3][index]!
+                                  //         .description!
+                                  //         .isNotEmpty
+                                  //     ? Text(
+                                  //         "${firstitemlist[3][index]!.description}",
+                                  //         style: const TextStyle(
+                                  //             fontSize: 10,
+                                  //             color: Color.fromARGB(
+                                  //                 255, 131, 130, 130)),
+                                  //       )
+                                  //     : const SizedBox(),
                                   const SizedBox(
                                     height: 3,
                                   ),

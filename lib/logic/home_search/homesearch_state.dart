@@ -8,14 +8,23 @@ class HomeSearchState extends Equatable {
     required this.alldata,
     required this.isloading,
     required this.homesatatus,
+    // required this.isfreedelinery,
+    // required this.ishalal,
+    // required this.ispromo,
     // required this.firstlistitems,
   });
   final HomeSearchModel? alldata;
   final bool isloading;
   final Status homesatatus;
+  // final bool isfreedelinery;
+  // final bool ishalal;
+  // final bool ispromo;
 
   // final List<List<Item?>> firstlistitems;
 
   @override
-  List<Object?> get props => [alldata, homesatatus];
+  List<Object?> get props => [
+        alldata, homesatatus,
+        // isfreedelinery, ishalal, ispromo
+      ];
 }

@@ -2,7 +2,6 @@
 //
 //     final searchResturantFilterModel = searchResturantFilterModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<SearchResturantFilterModel> searchResturantFilterModelFromJson(

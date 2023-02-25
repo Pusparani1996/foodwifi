@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,10 +20,52 @@ class BelowHomeone extends StatelessWidget {
   Widget build(BuildContext context) {
     return homebelowdara.isEmpty
         // for lazy loading part not using lazy_loading package
-        ? const Skeleton(
-            radius: 15,
-            height: 280,
-            width: 350,
+        ? Column(
+            children: [
+              const SizedBox(
+                height: 7,
+              ),
+              Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 16, left: 14, right: 8, bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Restaurants near you",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Text(
+                        "view all restaurents",
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: Color.fromARGB(255, 147, 149, 149)),
+                      ),
+                      SizedBox(
+                        height: 23,
+                      ),
+                      Text(
+                        "No restaurants found",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // const SizedBox(
+              //   height: 7,
+              // ),
+            ],
           )
         : Padding(
             padding: const EdgeInsets.only(top: 6),

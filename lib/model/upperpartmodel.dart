@@ -2,7 +2,6 @@
 //
 //     final welcome = welcomeFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 UpperPartModel? welcomeFromJson(String str) =>

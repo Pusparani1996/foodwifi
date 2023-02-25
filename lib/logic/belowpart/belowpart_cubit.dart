@@ -39,8 +39,6 @@ class BellowDataCubit extends Cubit<BellowPartState> {
         headers: baseHeader,
       );
 
-      // log(response.toString());
-
       if (response.statusCode == 200) {
         // var data2 = bellowanotherModelFromJson(response.body);
         var data = json.decode(response.body) as List;
@@ -80,9 +78,9 @@ class BellowDataCubit extends Cubit<BellowPartState> {
         emit(BellowPartState(
             status: Status.loaded,
             belowalldata: finaljoinbellow,
-            oneitem: [],
+            oneitem: const [],
             belowdatalistveg: vegalllist,
-            bellowallwithoutremove: []));
+            bellowallwithoutremove: const []));
         // return data2;
       } else {
         emit(const BellowPartState(
@@ -94,7 +92,7 @@ class BellowDataCubit extends Cubit<BellowPartState> {
       }
       //return null;
     } catch (e) {
-      log("Erroer come from brllow Cubit" + e.toString());
+      log("Erroer come from brllow Cubit$e");
       emit(const BellowPartState(
         status: Status.error,
       ));

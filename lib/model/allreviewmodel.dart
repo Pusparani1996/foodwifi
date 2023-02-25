@@ -2,7 +2,6 @@
 //
 //     final allProductReview = allProductReviewFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 AllProductReviewModel allProductReviewFromJson(String str) =>

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/search/search_cubit.dart';
 import 'package:foodwifi/model/searchModel.dart';
 import 'package:foodwifi/pages/search_page.dart';
-import 'package:foodwifi/pages/searchrestuarentfilter_page.dart';
 import 'package:foodwifi/widget/firstlistContainerSkeleton.dart';
 
 class StoreTypesPage extends StatefulWidget {
@@ -74,7 +73,7 @@ class _StoreTypesPageState extends State<StoreTypesPage> {
       searchdata = searcgstatus.searchdata!.storeTypes;
       for (var element in radiostoretype) {
         radiostoretypelist.add(element.id);
-        log("id :" + element.id);
+        log("id :${element.id}");
       }
     }
 
@@ -305,8 +304,6 @@ class _StoreTypesPageState extends State<StoreTypesPage> {
                                 log("Pressed");
 
                                 storetypeid = searchdata[selectedindex!].id;
-                                //  bool for navigate to searchpage
-                                //showsortby = false;
                               });
                               Navigator.pop(
                                 context,
@@ -354,12 +351,19 @@ class _StoreTypesPageState extends State<StoreTypesPage> {
                                   // color: Colors.grey,
                                   child: InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        resetdata = true;
-                                        // cuisinsid = searchdata[selectedindex!]
-                                        //     .id
-                                        //     .toString();
-                                      });
+                                      if (widget.showbelowhomesearch == true) {
+                                        log("press2");
+                                        setState(() {
+                                          resetdata = false;
+                                          storetypeid = "";
+                                          // allcuisines = "";
+                                        });
+                                        Navigator.pop(context, storetypeid);
+                                      } else {
+                                        setState(() {
+                                          resetdata = true;
+                                        });
+                                      }
                                     },
                                     child: Container(
                                       height: 45,
@@ -389,12 +393,19 @@ class _StoreTypesPageState extends State<StoreTypesPage> {
                               // color: Colors.grey,
                               child: InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    resetdata = true;
-                                    // cuisinsid = searchdata[selectedindex!]
-                                    //     .id
-                                    //     .toString();
-                                  });
+                                  if (widget.showbelowhomesearch == true) {
+                                    log("press2");
+                                    setState(() {
+                                      resetdata = false;
+                                      storetypeid = "";
+                                      // allcuisines = "";
+                                    });
+                                    Navigator.pop(context, storetypeid);
+                                  } else {
+                                    setState(() {
+                                      resetdata = true;
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   height: 45,

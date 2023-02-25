@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/search/search_cubit.dart';
-import 'package:foodwifi/logic/searchrestuarentfilter/searchfilter_cubit.dart';
 
 import 'package:foodwifi/model/searchModel.dart';
 import 'package:foodwifi/pages/homepage.dart';
@@ -318,7 +317,7 @@ class _SearchPageState extends State<SearchPage> {
         children: [
           const Divider(
             thickness: 7,
-            color: const Color.fromARGB(255, 229, 224, 224),
+            color: Color.fromARGB(255, 229, 224, 224),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, top: 24),
