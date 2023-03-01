@@ -9,7 +9,7 @@ class ServiceApi {
   Future<Map<String, dynamic>?> getcustomreview(
     String id,
   ) async {
-    log("REVIEW SERVICE API :$id");
+    //  log("REVIEW SERVICE API :$id");
     try {
       final queryParameters = {
         'id': id,

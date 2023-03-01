@@ -8,9 +8,11 @@ import 'package:foodwifi/homedatalist/imphalmostfavourite.dart';
 import 'package:foodwifi/homedatalist/newonfoodwifi.dart';
 import 'package:foodwifi/homedatalist/offerforyou_tajkira.dart';
 import 'package:foodwifi/homedatalist/supportlocalfavourite.dart';
+import 'package:foodwifi/logic/belowpart/belowpart_state.dart';
 import 'package:foodwifi/logic/cubit/fetchdata_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/home_search/homesearch_cubit.dart';
+import 'package:foodwifi/logic/home_search/homesearch_state.dart';
 import 'package:foodwifi/logic/search/search_cubit.dart';
 
 import 'package:foodwifi/model/foodwifimodel.dart';
@@ -328,6 +330,7 @@ class _HomePageState extends State<HomePage>
     final searcgstatus = context.watch<SearcgCubit>().state;
 
     List<FoodwifiModel> alldatalist = alldata.alldata;
+    HomeStatus homebelowstatus = homesearchdata.homesatatus;
 
     firstitemlist = alldata.firstlistitems;
     radiostoretype = searcgstatus.radiostoretypelist;
@@ -468,8 +471,8 @@ class _HomePageState extends State<HomePage>
                               Container(
                                 decoration: BoxDecoration(
                                     color: const Color.fromARGB(
-                                        255, 241, 236, 236),
-                                    borderRadius: BorderRadius.circular(16)),
+                                        255, 245, 243, 243),
+                                    borderRadius: BorderRadius.circular(10)),
                                 height: MediaQuery.of(context).size.height > 500
                                     ? MediaQuery.of(context).size.height / 20
                                     : MediaQuery.of(context).size.height / 10,
@@ -684,87 +687,167 @@ class _HomePageState extends State<HomePage>
                                                     child: Container(
                                                       height: 15,
                                                       decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            color: tabbar[
+                                                                        index] ==
+                                                                    sortbyname
+                                                                ? const Color.fromARGB(
+                                                                    255,
+                                                                    129,
+                                                                    245,
+                                                                    187)
+                                                                : tabbar[index] ==
+                                                                        cuisinesname
+                                                                    ? const Color
+                                                                            .fromARGB(
+                                                                        255,
+                                                                        129,
+                                                                        245,
+                                                                        187)
+                                                                    : tabbar[index] ==
+                                                                            storetypesname
+                                                                        ? const Color.fromARGB(
+                                                                            255,
+                                                                            129,
+                                                                            245,
+                                                                            187)
+
+                                                                        // free delivery
+                                                                        : isfreedelivery
+                                                                            ? index == 3
+                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                : ispromo
+                                                                                    ? index == 5
+                                                                                        ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                        : ishalal
+                                                                                            ? index == 4
+                                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                                            : const Color.fromARGB(255, 245, 243, 243)
+                                                                                    : ishalal
+                                                                                        ? index == 4
+                                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                            : const Color.fromARGB(255, 245, 243, 243)
+                                                                                        : const Color.fromARGB(255, 245, 243, 243)
+                                                                            //halal
+
+                                                                            : ishalal
+                                                                                ? index == 4
+                                                                                    ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                    : ispromo
+                                                                                        ? index == 5
+                                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                            : isfreedelivery
+                                                                                                ? index == 3
+                                                                                                    ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                    : const Color.fromARGB(255, 245, 243, 243)
+                                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                                        : isfreedelivery
+                                                                                            ? index == 3
+                                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                                            : const Color.fromARGB(255, 245, 243, 243)
+
+                                                                                // Promo
+
+                                                                                : ispromo
+                                                                                    ? index == 5
+                                                                                        ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                        : const Color.fromARGB(255, 245, 243, 243)
+                                                                                    : ishalal
+                                                                                        ? index == 4
+                                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                            : const Color.fromARGB(255, 245, 243, 243)
+                                                                                        : isfreedelivery
+                                                                                            ? index == 5
+                                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                                            : isfreedelivery
+                                                                                                ? index == 5
+                                                                                                    ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                    : const Color.fromARGB(255, 245, 243, 243)
+                                                                                                : const Color.fromARGB(255, 245, 243, 243),
+                                                          ),
                                                           color: tabbar[
                                                                       index] ==
                                                                   sortbyname
                                                               ? const Color.fromARGB(
                                                                   255,
-                                                                  111,
-                                                                  241,
-                                                                  176)
+                                                                  129,
+                                                                  245,
+                                                                  187)
                                                               : tabbar[index] ==
                                                                       cuisinesname
                                                                   ? const Color
                                                                           .fromARGB(
                                                                       255,
-                                                                      111,
-                                                                      241,
-                                                                      176)
+                                                                      129,
+                                                                      245,
+                                                                      187)
                                                                   : tabbar[index] ==
                                                                           storetypesname
                                                                       ? const Color
                                                                               .fromARGB(
                                                                           255,
-                                                                          111,
-                                                                          241,
-                                                                          176)
+                                                                          129,
+                                                                          245,
+                                                                          187)
 
                                                                       // free delivery
                                                                       : isfreedelivery
                                                                           ? index == 3
-                                                                              ? const Color.fromARGB(255, 111, 241, 176)
+                                                                              ? const Color.fromARGB(255, 129, 245, 187)
                                                                               : ispromo
                                                                                   ? index == 5
-                                                                                      ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                      ? const Color.fromARGB(255, 129, 245, 187)
                                                                                       : ishalal
                                                                                           ? index == 4
-                                                                                              ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                              : const Color.fromARGB(255, 219, 233, 231)
-                                                                                          : const Color.fromARGB(255, 219, 233, 231)
+                                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                                          : const Color.fromARGB(255, 245, 243, 243)
                                                                                   : ishalal
                                                                                       ? index == 4
-                                                                                          ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                          : const Color.fromARGB(255, 219, 233, 231)
-                                                                                      : const Color.fromARGB(255, 219, 233, 231)
-
+                                                                                          ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                          : const Color.fromARGB(255, 245, 243, 243)
+                                                                                      : const Color.fromARGB(255, 245, 243, 243)
                                                                           //halal
 
                                                                           : ishalal
                                                                               ? index == 4
-                                                                                  ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
                                                                                   : ispromo
                                                                                       ? index == 5
-                                                                                          ? const Color.fromARGB(255, 111, 241, 176)
+                                                                                          ? const Color.fromARGB(255, 129, 245, 187)
                                                                                           : isfreedelivery
                                                                                               ? index == 3
-                                                                                                  ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                                  : const Color.fromARGB(255, 219, 233, 231)
-                                                                                              : const Color.fromARGB(255, 219, 233, 231)
+                                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                                              : const Color.fromARGB(255, 245, 243, 243)
                                                                                       : isfreedelivery
                                                                                           ? index == 3
-                                                                                              ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                              : const Color.fromARGB(255, 219, 233, 231)
-                                                                                          : const Color.fromARGB(255, 219, 233, 231)
+                                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                                          : const Color.fromARGB(255, 245, 243, 243)
 
                                                                               // Promo
 
                                                                               : ispromo
                                                                                   ? index == 5
-                                                                                      ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                      : const Color.fromARGB(255, 219, 233, 231)
+                                                                                      ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                      : const Color.fromARGB(255, 245, 243, 243)
                                                                                   : ishalal
                                                                                       ? index == 4
-                                                                                          ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                          : const Color.fromARGB(255, 219, 233, 231)
+                                                                                          ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                          : const Color.fromARGB(255, 245, 243, 243)
                                                                                       : isfreedelivery
                                                                                           ? index == 5
-                                                                                              ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                              : const Color.fromARGB(255, 219, 233, 231)
+                                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                              : const Color.fromARGB(255, 245, 243, 243)
                                                                                           : isfreedelivery
                                                                                               ? index == 5
-                                                                                                  ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                                  : const Color.fromARGB(255, 219, 233, 231)
-                                                                                              : const Color.fromARGB(255, 219, 233, 231),
+                                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                                              : const Color.fromARGB(255, 245, 243, 243),
                                                           borderRadius: BorderRadius.circular(20)),
                                                       child: Padding(
                                                         padding:
@@ -909,9 +992,12 @@ class _HomePageState extends State<HomePage>
                       firstitemlist: firstitemlist, alldatalist: alldatalist),
 
                   // FOR HOME SEARCH BELOW PART
-
+                  const SizedBox(
+                    height: 7,
+                  ),
                   BelowHomeone(
                     homebelowdara: homebelowdara,
+                    homesearchstatus: homebelowstatus,
                   ),
                   const SizedBox(
                     height: 7,

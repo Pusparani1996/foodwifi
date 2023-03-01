@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:foodwifi/model/home_search_model.dart';
 
-enum Status { initial, loading, loaded, error }
+enum HomeStatus { initial, loading, loaded, error }
 
 class HomeSearchState extends Equatable {
   const HomeSearchState({
@@ -15,7 +15,7 @@ class HomeSearchState extends Equatable {
   });
   final HomeSearchModel? alldata;
   final bool isloading;
-  final Status homesatatus;
+  final HomeStatus homesatatus;
   // final bool isfreedelinery;
   // final bool ishalal;
   // final bool ispromo;

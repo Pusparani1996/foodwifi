@@ -13,11 +13,15 @@ class MixedProductPage extends StatefulWidget {
     required this.finaljoinreviewanddelowlist,
     required this.categoryindex,
     required this.id,
+    required this.searchcontroller,
+    required this.showsearchfield,
   });
 
   final List<JoinReviewBellowModel>? finaljoinreviewanddelowlist;
   final int categoryindex;
   final String id;
+  final String searchcontroller;
+  final bool showsearchfield;
 
   @override
   State<MixedProductPage> createState() => _MixedProductPageState();
@@ -25,6 +29,17 @@ class MixedProductPage extends StatefulWidget {
 
 class _MixedProductPageState extends State<MixedProductPage> {
   Product? products;
+  @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   if (widget.showsearchfield == true) {
+  //     setState(() {
+  //       widget.finaljoinreviewanddelowlist!.clear();
+  //     });
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,261 +81,264 @@ class _MixedProductPageState extends State<MixedProductPage> {
                             .products
                             .length,
                         itemBuilder: (context, productindex) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetailsPage(
-                                      products: widget
-                                          .finaljoinreviewanddelowlist![
-                                              widget.categoryindex]
-                                          .products[productindex],
-                                    ),
-                                  ));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: SizedBox(
-                                child: Column(
-                                  children: [
-                                    FittedBox(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                              child: widget
-                                                      .finaljoinreviewanddelowlist![
-                                                          widget.categoryindex]
-                                                      .products[productindex]
-                                                      .img
-                                                      .isEmpty
-                                                  ? Stack(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 90,
-                                                          width: 90,
-                                                          child: ClipOval(
-                                                              child:
-                                                                  Image.asset(
-                                                            "assets/images/foodwifi.png",
-                                                            color: Colors.white
-                                                                .withOpacity(
-                                                                    0.2),
-                                                            colorBlendMode:
-                                                                BlendMode
-                                                                    .modulate,
-                                                          )),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 15,
-                                                          width: 20,
-                                                          child: Image.asset(widget
-                                                                      .finaljoinreviewanddelowlist![
-                                                                          widget
-                                                                              .categoryindex]
-                                                                      .products[
-                                                                          productindex]
-                                                                      .type ==
-                                                                  "non_veg"
-                                                              ? "assets/images/non-veg.png"
-                                                              : "assets/images/veg.jpg"),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Stack(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          child: Image.network(
-                                                            "https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].img}",
-                                                            height: 90,
-                                                            width: 90,
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            top: 2,
-                                                          ),
-                                                          child: SizedBox(
-                                                            height: 15,
-                                                            width: 20,
-                                                            child: Image.asset(widget
-                                                                        .finaljoinreviewanddelowlist![widget
-                                                                            .categoryindex]
-                                                                        .products[
-                                                                            productindex]
-                                                                        .type ==
-                                                                    "non_veg"
-                                                                ? "assets/images/non-veg.png"
-                                                                : "assets/images/veg.jpg"),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )),
-                                          const SizedBox(
-                                            width: 14,
+                          return widget
+                                  .finaljoinreviewanddelowlist![
+                                      widget.categoryindex]
+                                  .products[productindex]
+                                  .name
+                                  .toLowerCase()
+                                  .contains(widget.searchcontroller)
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailsPage(
+                                            products: widget
+                                                .finaljoinreviewanddelowlist![
+                                                    widget.categoryindex]
+                                                .products[productindex],
                                           ),
-                                          SizedBox(
-                                            width: 220,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                        ));
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: SizedBox(
+                                      child: Column(
+                                        children: [
+                                          FittedBox(
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    widget
-                                                        .finaljoinreviewanddelowlist![
-                                                            widget
-                                                                .categoryindex]
-                                                        .products[productindex]
-                                                        .name
-                                                        .toString(),
-                                                    maxLines: 3),
-                                                SizedBox(
-                                                  width: 200,
-                                                  child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 3,
-                                                    widget
-                                                        .finaljoinreviewanddelowlist![
-                                                            widget
-                                                                .categoryindex]
-                                                        .products[productindex]
-                                                        .description
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            174,
-                                                            169,
-                                                            169)),
-                                                  ),
-                                                ),
+                                                Container(
+                                                    child: widget
+                                                            .finaljoinreviewanddelowlist![
+                                                                widget
+                                                                    .categoryindex]
+                                                            .products[
+                                                                productindex]
+                                                            .img
+                                                            .isEmpty
+                                                        ? Stack(
+                                                            alignment: Alignment
+                                                                .topRight,
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 90,
+                                                                width: 90,
+                                                                child: ClipOval(
+                                                                    child: Image
+                                                                        .asset(
+                                                                  "assets/images/foodwifi.png",
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.2),
+                                                                  colorBlendMode:
+                                                                      BlendMode
+                                                                          .modulate,
+                                                                )),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                                width: 20,
+                                                                child: Image.asset(widget
+                                                                            .finaljoinreviewanddelowlist![widget.categoryindex]
+                                                                            .products[productindex]
+                                                                            .type ==
+                                                                        "non_veg"
+                                                                    ? "assets/images/non-veg.png"
+                                                                    : "assets/images/veg.jpg"),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : Stack(
+                                                            alignment: Alignment
+                                                                .topRight,
+                                                            children: [
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                child: Image
+                                                                    .network(
+                                                                  "https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].img}",
+                                                                  height: 90,
+                                                                  width: 90,
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  top: 2,
+                                                                ),
+                                                                child: SizedBox(
+                                                                  height: 15,
+                                                                  width: 20,
+                                                                  child: Image.asset(widget
+                                                                              .finaljoinreviewanddelowlist![widget.categoryindex]
+                                                                              .products[productindex]
+                                                                              .type ==
+                                                                          "non_veg"
+                                                                      ? "assets/images/non-veg.png"
+                                                                      : "assets/images/veg.jpg"),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )),
                                                 const SizedBox(
-                                                  height: 14,
+                                                  width: 14,
                                                 ),
                                                 SizedBox(
-                                                  child: Row(
+                                                  width: 220,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
-                                                        widget
-                                                                    .finaljoinreviewanddelowlist![
-                                                                        widget
-                                                                            .categoryindex]
-                                                                    .products[
-                                                                        productindex]
-                                                                    .price ==
-                                                                widget
-                                                                    .finaljoinreviewanddelowlist![
-                                                                        widget
-                                                                            .categoryindex]
-                                                                    .products[
-                                                                        productindex]
-                                                                    .offer
-                                                                    .offerPrice
-                                                            ? ""
-                                                            : "₹${widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].price}",
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.black87,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          widget
+                                                              .finaljoinreviewanddelowlist![
+                                                                  widget
+                                                                      .categoryindex]
+                                                              .products[
+                                                                  productindex]
+                                                              .name
+                                                              .toString(),
+                                                          maxLines: 3),
+                                                      SizedBox(
+                                                        width: 200,
+                                                        child: Text(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 3,
+                                                          widget
+                                                              .finaljoinreviewanddelowlist![
+                                                                  widget
+                                                                      .categoryindex]
+                                                              .products[
+                                                                  productindex]
+                                                              .description
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 13,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          174,
+                                                                          169,
+                                                                          169)),
+                                                        ),
                                                       ),
                                                       const SizedBox(
-                                                        width: 7,
+                                                        height: 14,
                                                       ),
                                                       SizedBox(
                                                         child: Row(
                                                           children: [
                                                             Text(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              maxLines: 3,
                                                               widget
                                                                           .finaljoinreviewanddelowlist![widget
                                                                               .categoryindex]
                                                                           .products[
                                                                               productindex]
+                                                                          .price ==
+                                                                      widget
+                                                                          .finaljoinreviewanddelowlist![widget
+                                                                              .categoryindex]
+                                                                          .products[
+                                                                              productindex]
                                                                           .offer
-                                                                          .offerPrice ==
-                                                                      null
+                                                                          .offerPrice
                                                                   ? ""
-                                                                  : "₹${widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].offer.offerPrice!.toInt()}",
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
+                                                                  : "₹${widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].price}",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black87,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 7,
                                                             ),
                                                             SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  17,
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    maxLines: 3,
+                                                                    widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].offer.offerPrice ==
+                                                                            null
+                                                                        ? ""
+                                                                        : "₹${widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].offer.offerPrice!.toInt()}",
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
+                                                                        17,
+                                                                  ),
+                                                                  widget
+                                                                          .finaljoinreviewanddelowlist![widget
+                                                                              .categoryindex]
+                                                                          .products[
+                                                                              productindex]
+                                                                          .offer
+                                                                          .description!
+                                                                          .isEmpty
+                                                                      ? const SizedBox()
+                                                                      : Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(0),
+                                                                            color: const Color.fromARGB(
+                                                                                255,
+                                                                                25,
+                                                                                132,
+                                                                                95),
+                                                                          ),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(4.0),
+                                                                            child:
+                                                                                Row(
+                                                                              children: [
+                                                                                Transform.rotate(
+                                                                                    angle: 20.7,
+                                                                                    child: const Icon(
+                                                                                      Icons.local_offer,
+                                                                                      color: Colors.white,
+                                                                                      size: 10,
+                                                                                    )),
+                                                                                Text(
+                                                                                  widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].offer.description.toString(),
+                                                                                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                ],
+                                                              ),
                                                             ),
-                                                            widget
-                                                                    .finaljoinreviewanddelowlist![
-                                                                        widget
-                                                                            .categoryindex]
-                                                                    .products[
-                                                                        productindex]
-                                                                    .offer
-                                                                    .description!
-                                                                    .isEmpty
-                                                                ? const SizedBox()
-                                                                : Container(
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              0),
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          25,
-                                                                          132,
-                                                                          95),
-                                                                    ),
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              4.0),
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Transform.rotate(
-                                                                              angle: 20.7,
-                                                                              child: const Icon(
-                                                                                Icons.local_offer,
-                                                                                color: Colors.white,
-                                                                                size: 10,
-                                                                              )),
-                                                                          Text(
-                                                                            widget.finaljoinreviewanddelowlist![widget.categoryindex].products[productindex].offer.description.toString(),
-                                                                            style:
-                                                                                const TextStyle(color: Colors.white, fontSize: 10),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  )
                                                           ],
                                                         ),
                                                       ),
@@ -330,21 +348,24 @@ class _MixedProductPageState extends State<MixedProductPage> {
                                               ],
                                             ),
                                           ),
+                                          const Divider(
+                                            height: 20,
+                                            thickness: 1,
+                                            indent: 20,
+                                            endIndent: 0,
+                                            color: Color.fromARGB(
+                                                255, 227, 221, 221),
+                                          ),
                                         ],
                                       ),
                                     ),
-                                    const Divider(
-                                      height: 20,
-                                      thickness: 1,
-                                      indent: 20,
-                                      endIndent: 0,
-                                      color: Color.fromARGB(255, 227, 221, 221),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
+                                  ),
+                                )
+                              // : Container(
+                              //     height: 100,
+                              //     color: Colors.amber,
+                              //   )
+                              : const SizedBox();
                         },
                       ),
                     ],

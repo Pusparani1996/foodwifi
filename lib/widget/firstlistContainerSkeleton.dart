@@ -10,7 +10,7 @@ class Skeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       enabled: true,
-      baseColor: Colors.grey,
+      baseColor: Color.fromARGB(255, 200, 196, 196),
       highlightColor: Colors.white,
       child: Container(
         height: height,

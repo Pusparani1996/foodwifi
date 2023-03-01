@@ -117,7 +117,7 @@ class FoodNearYouListPage extends StatelessWidget {
                             height: 77,
                             width: 82,
                             child: CachedNetworkImage(
-                                fadeInDuration: const Duration(seconds: 2),
+                                fadeInDuration: const Duration(seconds: 1),
                                 imageUrl:
                                     'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[0][index]!.img}',
                                 fit: BoxFit.cover,

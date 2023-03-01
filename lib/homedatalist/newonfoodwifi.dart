@@ -81,7 +81,7 @@ class NewOnFoodWifiHotelImolist extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                       child: CachedNetworkImage(
                                           fadeInDuration:
-                                              const Duration(seconds: 2),
+                                              const Duration(seconds: 1),
                                           imageUrl:
                                               'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[3][index]!.img}',
                                           fit: BoxFit.cover,

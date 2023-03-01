@@ -109,7 +109,7 @@ class ImpahlMostFavouriteTastyTasteList extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(6),
                                     child: CachedNetworkImage(
                                         fadeInDuration:
-                                            const Duration(seconds: 2),
+                                            const Duration(seconds: 1),
                                         imageUrl:
                                             'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstitemlist[2][index]!.img}',
                                         fit: BoxFit.cover,

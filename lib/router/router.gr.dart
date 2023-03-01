@@ -82,6 +82,8 @@ class AppRouter extends _i9.RootStackRouter {
           finaljoinreviewanddelowlist: args.finaljoinreviewanddelowlist,
           categoryindex: args.categoryindex,
           id: args.id,
+          searchcontroller: args.searchcontroller,
+          showsearchfield: args.showsearchfield,
         ),
       );
     },
@@ -346,6 +348,8 @@ class MixedProductRoute extends _i9.PageRouteInfo<MixedProductRouteArgs> {
     required List<_i11.JoinReviewBellowModel>? finaljoinreviewanddelowlist,
     required int categoryindex,
     required String id,
+    required String searchcontroller,
+    required bool showsearchfield,
   }) : super(
           MixedProductRoute.name,
           path: '/mixed-product-page',
@@ -354,6 +358,8 @@ class MixedProductRoute extends _i9.PageRouteInfo<MixedProductRouteArgs> {
             finaljoinreviewanddelowlist: finaljoinreviewanddelowlist,
             categoryindex: categoryindex,
             id: id,
+            searchcontroller: searchcontroller,
+            showsearchfield: showsearchfield,
           ),
         );
 
@@ -366,6 +372,8 @@ class MixedProductRouteArgs {
     required this.finaljoinreviewanddelowlist,
     required this.categoryindex,
     required this.id,
+    required this.searchcontroller,
+    required this.showsearchfield,
   });
 
   final _i10.Key? key;
@@ -376,9 +384,13 @@ class MixedProductRouteArgs {
 
   final String id;
 
+  final String searchcontroller;
+
+  final bool showsearchfield;
+
   @override
   String toString() {
-    return 'MixedProductRouteArgs{key: $key, finaljoinreviewanddelowlist: $finaljoinreviewanddelowlist, categoryindex: $categoryindex, id: $id}';
+    return 'MixedProductRouteArgs{key: $key, finaljoinreviewanddelowlist: $finaljoinreviewanddelowlist, categoryindex: $categoryindex, id: $id, searchcontroller: $searchcontroller, showsearchfield: $showsearchfield}';
   }
 }
 

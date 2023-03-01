@@ -10,6 +10,7 @@ class BellowPartState extends Equatable {
     this.oneitem,
     this.belowdatalistveg,
     this.bellowallwithoutremove,
+    this.bellowallnamelist,
   });
   final Status status;
   final List<JoinReviewBellowModel>? bellowallwithoutremove;
@@ -17,7 +18,9 @@ class BellowPartState extends Equatable {
 
   final List<JoinReviewBellowModel>? oneitem;
   final List<JoinReviewBellowModel>? belowdatalistveg;
+  final List<dynamic>? bellowallnamelist;
 
   @override
-  List<Object?> get props => [status, belowalldata, bellowallwithoutremove];
+  List<Object?> get props =>
+      [status, belowalldata, bellowallwithoutremove, bellowallnamelist];
 }

@@ -58,6 +58,9 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
   double? progress;
   ScrollDirection? direction2;
   ScrollDirection? direction;
+  bool showsearchfield = false;
+  List<dynamic>? bellowallnamelist = [];
+  TextEditingController searchcontroller = TextEditingController();
 
   //it is used for thr ternary of scrollposition indes
 
@@ -68,9 +71,11 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
     context.read<UpperPartCubit>().uppergetalldata(
           widget.id,
         );
-    context.read<BellowDataCubit>().bellowanotherModelFromJson(widget.id);
+    context.read<BellowDataCubit>().bellowanotherModelFromJson(
+          id: widget.id,
+        );
 
-    log("initState");
+    // log("initState");
 
     // listener for scroll controller
     scrollcontroller.addListener(() {
@@ -80,10 +85,10 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
 //automatic scroll to items index without any ontap or onpress
 
     if (widget.autoscroll) {
-      log("Autoscroll : ${widget.autoscroll}");
+      // log("Autoscroll : ${widget.autoscroll}");
 
       Future.delayed(const Duration(seconds: 2), () {
-        log("auto Scroll");
+        //log("auto Scroll");
         scrollcontroller
             .animateTo(scrollcontroller.position.maxScrollExtent,
                 duration: const Duration(milliseconds: 1000),
@@ -95,7 +100,7 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
 
           scrolltoindex(widget.finalindex!);
 
-          log("final index :${widget.finalindex}");
+          // log("final index :${widget.finalindex}");
         }).whenComplete(() {
           // if (widget.products != null) {
           Future.delayed(const Duration(seconds: 2), () {
@@ -104,7 +109,8 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ProductDetailsPage(products: widget.products)));
-            log("products : ${widget.products}");
+
+            /// log("products : ${widget.products}");
           });
 
           // }
@@ -148,6 +154,7 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
     final bellowdata = context.watch<BellowDataCubit>().state;
     List<JoinReviewBellowModel>? finaljoinreviewandbelowlist =
         bellowdata.belowalldata;
+    log("below data : $finaljoinreviewandbelowlist");
 
     List<JoinReviewBellowModel>? belowdatalistveg = bellowdata.belowdatalistveg;
     // log("join data ${finaljoinreviewandbelowlist!.length}");
@@ -589,7 +596,7 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                                                   notification.metrics.pixels;
                                               if (direction ==
                                                   ScrollDirection.reverse) {
-                                                log('down');
+                                                //  log('down');
 
                                                 setState(() {
                                                   showcontaineratappbar = true;
@@ -604,7 +611,7 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                                                 }
                                               }
 
-                                              log('Progress :$progress');
+                                              // log('Progress :$progress');
 
                                               return true;
                                             },
@@ -627,11 +634,45 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                                                       finaljoinreviewandbelowlist,
                                                   categoryindex: categoryindex,
                                                   id: widget.id,
+                                                  searchcontroller:
+                                                      searchcontroller.text,
+                                                  showsearchfield:
+                                                      showsearchfield,
                                                 );
                                               },
                                             ),
                                           ),
                                         ),
+                                        // Container(
+                                        //   width:
+                                        //       MediaQuery.of(context).size.width,
+                                        //   color: Colors.white,
+                                        //   child: Padding(
+                                        //     padding: const EdgeInsets.symmetric(
+                                        //         vertical: 15, horizontal: 20),
+                                        //     child: Column(
+                                        //       children: const [
+                                        //         Text(
+                                        //           "Prices on this menu are set directly by the Merchant",
+                                        //           style: TextStyle(
+                                        //               fontSize: 13,
+                                        //               color: Colors.black54),
+                                        //         ),
+                                        //         SizedBox(
+                                        //           height: 4,
+                                        //         ),
+                                        //         Text(
+                                        //             "Price may differ between Delivery and Dine-in",
+                                        //             style: TextStyle(
+                                        //                 fontSize: 13,
+                                        //                 color: Colors.black54)),
+                                        //         SizedBox(
+                                        //           height: 40,
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // )
                                       ],
                                     )
                         ],
@@ -686,218 +727,273 @@ class _ProductUpperPageState extends State<ProductUpperPage> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // for showing list of item for scrolltoindex
-                                GestureDetector(
-                                    onTap: () {
-                                      showFlexibleBottomSheet(
-                                          bottomSheetColor: Colors.transparent,
-                                          isModal: true,
-                                          isDismissible: true,
-                                          duration:
-                                              const Duration(milliseconds: 500),
-                                          minHeight: 0.1,
-                                          initHeight: 0.8,
-                                          maxHeight: 0.8,
-                                          context: context,
-                                          builder: (context, controller,
-                                              bottomSheetOffset) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Container(
-                                                    height: 4,
-                                                    width: 33,
+                          showsearchfield == false
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // for showing list of item for scrolltoindex
+                                      GestureDetector(
+                                          onTap: () {
+                                            showFlexibleBottomSheet(
+                                                bottomSheetColor:
+                                                    Colors.transparent,
+                                                isModal: true,
+                                                isDismissible: true,
+                                                duration: const Duration(
+                                                    milliseconds: 500),
+                                                minHeight: 0.1,
+                                                initHeight: 0.8,
+                                                maxHeight: 0.8,
+                                                context: context,
+                                                builder: (context, controller,
+                                                    bottomSheetOffset) {
+                                                  return Container(
                                                     decoration: BoxDecoration(
-                                                        color: Colors.grey,
+                                                        color: Colors.white,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(20)),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 8,
-                                                    child: ListView.builder(
-                                                      controller: controller,
-                                                      itemCount:
-                                                          finaljoinreviewandbelowlist!
-                                                              .length,
-                                                      physics:
-                                                          const BouncingScrollPhysics(),
-                                                      scrollDirection:
-                                                          Axis.vertical,
-                                                      shrinkWrap: true,
-                                                      itemBuilder:
-                                                          (context, nameindex) {
-                                                        return GestureDetector(
-                                                          onTap: () {
-                                                            scrolltoindex(
-                                                                nameindex);
+                                                    child: Column(
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          height: 4,
+                                                          width: 33,
+                                                          decoration: BoxDecoration(
+                                                              color:
+                                                                  Colors.grey,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Expanded(
+                                                          flex: 8,
+                                                          child:
+                                                              ListView.builder(
+                                                            controller:
+                                                                controller,
+                                                            itemCount:
+                                                                finaljoinreviewandbelowlist!
+                                                                    .length,
+                                                            physics:
+                                                                const BouncingScrollPhysics(),
+                                                            scrollDirection:
+                                                                Axis.vertical,
+                                                            shrinkWrap: true,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    nameindex) {
+                                                              return GestureDetector(
+                                                                onTap: () {
+                                                                  scrolltoindex(
+                                                                      nameindex);
 
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Container(
-                                                            color: Colors.white,
-                                                            height: 50,
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          16),
-                                                                  child: Text(
-                                                                    finaljoinreviewandbelowlist[
-                                                                            nameindex]
-                                                                        .categoryName,
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            20),
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  height: 50,
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 16),
+                                                                        child:
+                                                                            Text(
+                                                                          finaljoinreviewandbelowlist[nameindex]
+                                                                              .categoryName,
+                                                                          style:
+                                                                              const TextStyle(fontSize: 20),
+                                                                        ),
+                                                                      ),
+                                                                      const Divider(
+                                                                        height:
+                                                                            20,
+                                                                        thickness:
+                                                                            1,
+                                                                        indent:
+                                                                            20,
+                                                                        endIndent:
+                                                                            0,
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            227,
+                                                                            221,
+                                                                            221),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
-                                                                const Divider(
-                                                                  height: 20,
-                                                                  thickness: 1,
-                                                                  indent: 20,
-                                                                  endIndent: 0,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          227,
-                                                                          221,
-                                                                          221),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                              );
+                                                            },
                                                           ),
-                                                        );
-                                                      },
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
+                                                  );
+                                                },
+                                                isExpand: true,
+                                                anchors: [0.1, 0.6]);
                                           },
-                                          isExpand: true,
-                                          anchors: [0.1, 0.6]);
-                                    },
 
-                                    // it can listen the position and change the text in above textfield(momo,chicken,friedrice)
-                                    child: ValueListenableBuilder<
-                                        Iterable<ItemPosition>>(
-                                      valueListenable:
-                                          itemPositionsListener.itemPositions,
-                                      builder: (context, positionvalue, child) {
-                                        int? min;
-                                        if (positionvalue.isNotEmpty) {
-                                          // Determine the first visible item by finding the item with the
-                                          // smallest trailing edge that is greater than 0.  i.e. the first
-                                          // item whose trailing edge in visible in the viewport.
-                                          min = positionvalue
-                                              .where((ItemPosition position) =>
-                                                  position.itemTrailingEdge >
-                                                  0.11)
-                                              .reduce((ItemPosition min,
-                                                      ItemPosition position) =>
-                                                  position.itemTrailingEdge <
-                                                          min.itemTrailingEdge
-                                                      ? position
-                                                      : min)
-                                              .index;
-                                          log(min.toString());
-                                          // Determine the last visible item by finding the item with the
-                                          // greatest leading edge that is less than 1.  i.e. the last
-                                          // item whose leading edge in visible in the viewport.
-                                        }
-                                        log(finaljoinreviewandbelowlist![min!]
-                                            .categoryName);
+                                          // it can listen the position and change the text in above textfield(momo,chicken,friedrice)
+                                          child: ValueListenableBuilder<
+                                              Iterable<ItemPosition>>(
+                                            valueListenable:
+                                                itemPositionsListener
+                                                    .itemPositions,
+                                            builder: (context, positionvalue,
+                                                child) {
+                                              int? min;
+                                              if (positionvalue.isNotEmpty) {
+                                                // Determine the first visible item by finding the item with the
+                                                // smallest trailing edge that is greater than 0.  i.e. the first
+                                                // item whose trailing edge in visible in the viewport.
+                                                min = positionvalue
+                                                    .where((ItemPosition
+                                                            position) =>
+                                                        position
+                                                            .itemTrailingEdge >
+                                                        0.11)
+                                                    .reduce((ItemPosition min,
+                                                            ItemPosition
+                                                                position) =>
+                                                        position.itemTrailingEdge <
+                                                                min.itemTrailingEdge
+                                                            ? position
+                                                            : min)
+                                                    .index;
+                                                // log(min.toString());
+                                                // Determine the last visible item by finding the item with the
+                                                // greatest leading edge that is less than 1.  i.e. the last
+                                                // item whose leading edge in visible in the viewport.
+                                              }
+                                              //  log(finaljoinreviewandbelowlist![
+                                              //           min!]
+                                              //       .categoryName);
 
-                                        return Container(
-                                          width: 230,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              color: const Color.fromARGB(
-                                                  255, 236, 242, 243)),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15),
-                                                  child: Row(
+                                              return Container(
+                                                width: 230,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color: const Color.fromARGB(
+                                                        255, 236, 242, 243)),
+                                                child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
-                                                      Text(
-                                                          finaljoinreviewandbelowlist[
-                                                                  min]
-                                                              .categoryName)
-
-                                                      // Text(' ${min ?? ''}'),
-                                                      // Text(' ${max ?? ''}'),
-                                                      // const Text('Reversed: '),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 10),
-                                                  child: Center(
-                                                    child: Icon(
-                                                        Icons
-                                                            .keyboard_arrow_down,
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                              ]),
-                                        );
-                                      },
-                                    )),
-                                Container(
-                                  width: 86,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: const Color.fromARGB(
-                                        255, 236, 242, 243),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 15),
-                                    child: Row(children: const [
-                                      Icon(Icons.search_outlined,
-                                          size: 16, color: Colors.black),
-                                      Text(
-                                        "Search",
-                                        style: TextStyle(fontSize: 12),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 15),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(finaljoinreviewandbelowlist![
+                                                                    min!]
+                                                                .categoryName)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 10),
+                                                        child: Center(
+                                                          child: Icon(
+                                                              Icons
+                                                                  .keyboard_arrow_down,
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              );
+                                            },
+                                          )),
+                                      Container(
+                                        width: 86,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: const Color.fromARGB(
+                                              255, 236, 242, 243),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              showsearchfield = true;
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15, right: 15),
+                                            child: Row(children: const [
+                                              Icon(Icons.search_outlined,
+                                                  size: 16,
+                                                  color: Colors.black),
+                                              Text(
+                                                "Search",
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                            ]),
+                                          ),
+                                        ),
                                       ),
-                                    ]),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: SizedBox(
+                                    height: 38,
+                                   
+                                    child: TextFormField(
+                                        controller: searchcontroller,
+                                        onChanged: (value) {
+                                       
+                                          Future.delayed(
+                                            const Duration(seconds: 2),
+                                          ).whenComplete(() => context
+                                              .read<BellowDataCubit>()
+                                              .bellowanotherModelFromJson(
+                                                  id: widget.id,
+                                                  onchangevalue: value,
+                                                  showsearchfield: true));
+
+                                       
+                                        },
+                                        textAlignVertical:
+                                            TextAlignVertical.center,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          hintText: "Looking for something?",
+                                          hintStyle: TextStyle(fontSize: 13),
+                                          alignLabelWithHint: true,
+                                        )),
+                                  ),
+                                )
                         ],
                       ),
                     ),

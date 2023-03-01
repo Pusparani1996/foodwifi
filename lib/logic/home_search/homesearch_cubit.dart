@@ -11,7 +11,7 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
       : super(const HomeSearchState(
           alldata: null,
           isloading: true,
-          homesatatus: Status.initial,
+          homesatatus: HomeStatus.initial,
           // isfreedelinery: false,
           // ishalal: false,
           // ispromo: false
@@ -19,7 +19,7 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
     // gethomesearch();
   }
 
-  bool get isLoading => state.homesatatus == Status.loading;
+  bool get isLoading => state.homesatatus == HomeStatus.loading;
   bool isMoredata = true;
 
   Future<void> gethomesearch({
@@ -37,7 +37,7 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
     emit(const HomeSearchState(
       alldata: null,
       isloading: false,
-      homesatatus: Status.loading,
+      homesatatus: HomeStatus.loading,
       // isfreedelinery: false,
       // ishalal: false,
       // ispromo: false
@@ -77,7 +77,7 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
           emit(HomeSearchState(
             alldata: homesearchdata,
             isloading: isMoredata,
-            homesatatus: Status.loaded,
+            homesatatus: HomeStatus.loaded,
             // isfreedelinery: freedelivery == null ? false : true,
             // ishalal: halal == null ? false : true,
             // ispromo: promo == null ? false : true,
@@ -90,7 +90,7 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
       emit(HomeSearchState(
         alldata: null,
         isloading: isMoredata,
-        homesatatus: Status.error,
+        homesatatus: HomeStatus.error,
         // isfreedelinery: false,
         // ishalal: false,
         // ispromo: false

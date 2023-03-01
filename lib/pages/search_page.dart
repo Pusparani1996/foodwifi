@@ -185,7 +185,7 @@ class _SearchPageState extends State<SearchPage> {
                         icon: const Icon(Icons.arrow_back_ios)),
                     Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 227, 229, 231),
+                          color: const Color.fromARGB(255, 245, 243, 243),
                           borderRadius: BorderRadius.circular(5)),
                       height: MediaQuery.of(context).size.height > 500
                           ? MediaQuery.of(context).size.height / 20

@@ -482,94 +482,181 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                   child: Container(
                                     height: 15,
                                     decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: tabbar[index] == widget.sortby
+                                              ? const Color.fromARGB(
+                                                  255, 129, 245, 187)
+                                              : tabbar[index] ==
+                                                      widget.storetypes
+                                                  ? const Color.fromARGB(
+                                                      255, 129, 245, 187)
+                                                  : tabbar[index] ==
+                                                          widget.cusines
+                                                      ? const Color.fromARGB(
+                                                          255, 129, 245, 187)
+
+                                                      // free delivery
+                                                      : widget.freedeliverycolor
+                                                          ? index == 3
+                                                              ? const Color.fromARGB(
+                                                                  255,
+                                                                  129,
+                                                                  245,
+                                                                  187)
+                                                              : widget
+                                                                      .promocolor
+                                                                  ? index == 5
+                                                                      ? const Color.fromARGB(
+                                                                          255,
+                                                                          129,
+                                                                          245,
+                                                                          187)
+                                                                      : widget
+                                                                              .halalcolor
+                                                                          ? index ==
+                                                                                  4
+                                                                              ? const Color.fromARGB(255, 129, 245,
+                                                                                  187)
+                                                                              : const Color.fromARGB(255, 245, 243,
+                                                                                  243)
+                                                                          : const Color.fromARGB(
+                                                                              255,
+                                                                              245,
+                                                                              243,
+                                                                              243)
+                                                                  : widget.halalcolor
+                                                                      ? index == 4
+                                                                          ? const Color.fromARGB(255, 129, 245, 187)
+                                                                          : const Color.fromARGB(255, 245, 243, 243)
+                                                                      : const Color.fromARGB(255, 245, 243, 243)
+
+                                                          //halal
+
+                                                          : widget.halalcolor
+                                                              ? index == 4
+                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                  : widget.promocolor
+                                                                      ? index == 5
+                                                                          ? const Color.fromARGB(255, 129, 245, 187)
+                                                                          : widget.freedeliverycolor
+                                                                              ? index == 3
+                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                      : widget.freedeliverycolor
+                                                                          ? index == 3
+                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                          : const Color.fromARGB(255, 245, 243, 243)
+
+                                                              // Promo
+
+                                                              : widget.promocolor
+                                                                  ? index == 5
+                                                                      ? const Color.fromARGB(255, 129, 245, 187)
+                                                                      : const Color.fromARGB(255, 245, 243, 243)
+                                                                  : widget.halalcolor
+                                                                      ? index == 4
+                                                                          ? const Color.fromARGB(255, 129, 245, 187)
+                                                                          : const Color.fromARGB(255, 245, 243, 243)
+                                                                      : widget.freedeliverycolor
+                                                                          ? index == 5
+                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                          : widget.freedeliverycolor
+                                                                              ? index == 5
+                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                              : const Color.fromARGB(255, 245, 243, 243),
+                                        ),
                                         color: tabbar[index] == widget.sortby
                                             ? const Color.fromARGB(
-                                                255, 111, 241, 176)
+                                                255, 129, 245, 187)
                                             : tabbar[index] == widget.storetypes
                                                 ? const Color.fromARGB(
-                                                    255, 111, 241, 176)
+                                                    255, 129, 245, 187)
                                                 : tabbar[index] ==
                                                         widget.cusines
                                                     ? const Color.fromARGB(
-                                                        255, 111, 241, 176)
+                                                        255, 129, 245, 187)
 
                                                     // free delivery
                                                     : widget.freedeliverycolor
                                                         ? index == 3
                                                             ? const Color.fromARGB(
-                                                                255, 111, 241, 176)
+                                                                255, 129, 245, 187)
                                                             : widget.promocolor
                                                                 ? index == 5
                                                                     ? const Color.fromARGB(
                                                                         255,
-                                                                        111,
-                                                                        241,
-                                                                        176)
+                                                                        129,
+                                                                        245,
+                                                                        187)
                                                                     : widget
                                                                             .halalcolor
                                                                         ? index ==
                                                                                 4
                                                                             ? const Color.fromARGB(
-                                                                                255, 111, 241, 176)
+                                                                                255, 129, 245, 187)
                                                                             : const Color.fromARGB(
                                                                                 255,
-                                                                                219,
-                                                                                233,
-                                                                                231)
+                                                                                245,
+                                                                                243,
+                                                                                243)
                                                                         : const Color.fromARGB(
                                                                             255,
-                                                                            219,
-                                                                            233,
-                                                                            231)
+                                                                            245,
+                                                                            243,
+                                                                            243)
                                                                 : widget
                                                                         .halalcolor
                                                                     ? index == 4
                                                                         ? const Color.fromARGB(
                                                                             255,
-                                                                            111,
-                                                                            241,
-                                                                            176)
-                                                                        : const Color.fromARGB(255, 219, 233, 231)
-                                                                    : const Color.fromARGB(255, 219, 233, 231)
+                                                                            129,
+                                                                            245,
+                                                                            187)
+                                                                        : const Color.fromARGB(255, 245, 243, 243)
+                                                                    : const Color.fromARGB(255, 245, 243, 243)
 
                                                         //halal
 
                                                         : widget.halalcolor
                                                             ? index == 4
-                                                                ? const Color.fromARGB(255, 111, 241, 176)
+                                                                ? const Color.fromARGB(255, 129, 245, 187)
                                                                 : widget.promocolor
                                                                     ? index == 5
-                                                                        ? const Color.fromARGB(255, 111, 241, 176)
+                                                                        ? const Color.fromARGB(255, 129, 245, 187)
                                                                         : widget.freedeliverycolor
                                                                             ? index == 3
-                                                                                ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                : const Color.fromARGB(255, 219, 233, 231)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
+                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
                                                                     : widget.freedeliverycolor
                                                                         ? index == 3
-                                                                            ? const Color.fromARGB(255, 111, 241, 176)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
-                                                                        : const Color.fromARGB(255, 219, 233, 231)
+                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
+                                                                        : const Color.fromARGB(255, 245, 243, 243)
 
                                                             // Promo
 
                                                             : widget.promocolor
                                                                 ? index == 5
-                                                                    ? const Color.fromARGB(255, 111, 241, 176)
-                                                                    : const Color.fromARGB(255, 219, 233, 231)
+                                                                    ? const Color.fromARGB(255, 129, 245, 187)
+                                                                    : const Color.fromARGB(255, 245, 243, 243)
                                                                 : widget.halalcolor
                                                                     ? index == 4
-                                                                        ? const Color.fromARGB(255, 111, 241, 176)
-                                                                        : const Color.fromARGB(255, 219, 233, 231)
+                                                                        ? const Color.fromARGB(255, 129, 245, 187)
+                                                                        : const Color.fromARGB(255, 245, 243, 243)
                                                                     : widget.freedeliverycolor
                                                                         ? index == 5
-                                                                            ? const Color.fromARGB(255, 111, 241, 176)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
+                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
                                                                         : widget.freedeliverycolor
                                                                             ? index == 5
-                                                                                ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                : const Color.fromARGB(255, 219, 233, 231)
-                                                                            : const Color.fromARGB(255, 219, 233, 231),
+                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                            : const Color.fromARGB(255, 245, 243, 243),
                                         borderRadius: BorderRadius.circular(20)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -934,18 +1021,103 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                       child: Container(
                                         height: 15,
                                         decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: tabbar[index] ==
+                                                      widget.sortby
+                                                  ? const Color.fromARGB(
+                                                      255, 129, 245, 187)
+                                                  : tabbar[index] ==
+                                                          widget.storetypes
+                                                      ? const Color.fromARGB(
+                                                          255, 129, 245, 187)
+                                                      : tabbar[index] ==
+                                                              widget.cusines
+                                                          ? const Color.fromARGB(
+                                                              255,
+                                                              129,
+                                                              245,
+                                                              187)
+
+                                                          // free delivery
+                                                          : widget
+                                                                  .freedeliverycolor
+                                                              ? index == 3
+                                                                  ? const Color.fromARGB(
+                                                                      255,
+                                                                      129,
+                                                                      245,
+                                                                      187)
+                                                                  : widget
+                                                                          .promocolor
+                                                                      ? index ==
+                                                                              5
+                                                                          ? const Color.fromARGB(
+                                                                              255,
+                                                                              129,
+                                                                              245,
+                                                                              187)
+                                                                          : widget.halalcolor
+                                                                              ? index == 4
+                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                      : widget.halalcolor
+                                                                          ? index == 4
+                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                          : const Color.fromARGB(255, 245, 243, 243)
+
+                                                              //halal
+
+                                                              : widget.halalcolor
+                                                                  ? index == 4
+                                                                      ? const Color.fromARGB(255, 129, 245, 187)
+                                                                      : widget.promocolor
+                                                                          ? index == 5
+                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                              : widget.freedeliverycolor
+                                                                                  ? index == 3
+                                                                                      ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                      : const Color.fromARGB(255, 245, 243, 243)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                          : widget.freedeliverycolor
+                                                                              ? index == 3
+                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+
+                                                                  // Promo
+
+                                                                  : widget.promocolor
+                                                                      ? index == 5
+                                                                          ? const Color.fromARGB(255, 129, 245, 187)
+                                                                          : const Color.fromARGB(255, 245, 243, 243)
+                                                                      : widget.halalcolor
+                                                                          ? index == 4
+                                                                              ? const Color.fromARGB(255, 129, 245, 187)
+                                                                              : const Color.fromARGB(255, 245, 243, 243)
+                                                                          : widget.freedeliverycolor
+                                                                              ? index == 5
+                                                                                  ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243)
+                                                                              : widget.freedeliverycolor
+                                                                                  ? index == 5
+                                                                                      ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                      : const Color.fromARGB(255, 245, 243, 243)
+                                                                                  : const Color.fromARGB(255, 245, 243, 243),
+                                            ),
                                             color: tabbar[index] ==
                                                     widget.sortby
                                                 ? const Color.fromARGB(
-                                                    255, 111, 241, 176)
+                                                    255, 129, 245, 187)
                                                 : tabbar[index] ==
                                                         widget.storetypes
                                                     ? const Color.fromARGB(
-                                                        255, 111, 241, 176)
+                                                        255, 129, 245, 187)
                                                     : tabbar[index] ==
                                                             widget.cusines
                                                         ? const Color.fromARGB(
-                                                            255, 111, 241, 176)
+                                                            255, 129, 245, 187)
 
                                                         // free delivery
                                                         : widget
@@ -954,66 +1126,66 @@ class _SearchRestuarentFilterState extends State<SearchRestuarentFilter> {
                                                                 ? const Color
                                                                         .fromARGB(
                                                                     255,
-                                                                    111,
-                                                                    241,
-                                                                    176)
+                                                                    129,
+                                                                    245,
+                                                                    187)
                                                                 : widget
                                                                         .promocolor
                                                                     ? index == 5
                                                                         ? const Color.fromARGB(
                                                                             255,
-                                                                            111,
-                                                                            241,
-                                                                            176)
+                                                                            129,
+                                                                            245,
+                                                                            187)
                                                                         : widget.halalcolor
                                                                             ? index == 4
-                                                                                ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                : const Color.fromARGB(255, 219, 233, 231)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
+                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
                                                                     : widget.halalcolor
                                                                         ? index == 4
-                                                                            ? const Color.fromARGB(255, 111, 241, 176)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
-                                                                        : const Color.fromARGB(255, 219, 233, 231)
+                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
+                                                                        : const Color.fromARGB(255, 245, 243, 243)
 
                                                             //halal
 
                                                             : widget.halalcolor
                                                                 ? index == 4
-                                                                    ? const Color.fromARGB(255, 111, 241, 176)
+                                                                    ? const Color.fromARGB(255, 129, 245, 187)
                                                                     : widget.promocolor
                                                                         ? index == 5
-                                                                            ? const Color.fromARGB(255, 111, 241, 176)
+                                                                            ? const Color.fromARGB(255, 129, 245, 187)
                                                                             : widget.freedeliverycolor
                                                                                 ? index == 3
-                                                                                    ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                    : const Color.fromARGB(255, 219, 233, 231)
-                                                                                : const Color.fromARGB(255, 219, 233, 231)
+                                                                                    ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                    : const Color.fromARGB(255, 245, 243, 243)
+                                                                                : const Color.fromARGB(255, 245, 243, 243)
                                                                         : widget.freedeliverycolor
                                                                             ? index == 3
-                                                                                ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                : const Color.fromARGB(255, 219, 233, 231)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
+                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                : const Color.fromARGB(255, 245, 243, 243)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
 
                                                                 // Promo
 
                                                                 : widget.promocolor
                                                                     ? index == 5
-                                                                        ? const Color.fromARGB(255, 111, 241, 176)
-                                                                        : const Color.fromARGB(255, 219, 233, 231)
+                                                                        ? const Color.fromARGB(255, 129, 245, 187)
+                                                                        : const Color.fromARGB(255, 245, 243, 243)
                                                                     : widget.halalcolor
                                                                         ? index == 4
-                                                                            ? const Color.fromARGB(255, 111, 241, 176)
-                                                                            : const Color.fromARGB(255, 219, 233, 231)
+                                                                            ? const Color.fromARGB(255, 129, 245, 187)
+                                                                            : const Color.fromARGB(255, 245, 243, 243)
                                                                         : widget.freedeliverycolor
                                                                             ? index == 5
-                                                                                ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                : const Color.fromARGB(255, 219, 233, 231)
+                                                                                ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                : const Color.fromARGB(255, 245, 243, 243)
                                                                             : widget.freedeliverycolor
                                                                                 ? index == 5
-                                                                                    ? const Color.fromARGB(255, 111, 241, 176)
-                                                                                    : const Color.fromARGB(255, 219, 233, 231)
-                                                                                : const Color.fromARGB(255, 219, 233, 231),
+                                                                                    ? const Color.fromARGB(255, 129, 245, 187)
+                                                                                    : const Color.fromARGB(255, 245, 243, 243)
+                                                                                : const Color.fromARGB(255, 245, 243, 243),
                                             // : const Color.fromARGB(
                                             //     255, 213, 221, 221),
                                             borderRadius: BorderRadius.circular(20)),
